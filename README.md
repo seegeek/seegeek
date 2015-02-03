@@ -1,3 +1,3 @@
 # seegeek
-first see，first share
-A open platform for Event Video Gathering and Sharing
+First Scene, First See, First Share;
+An open platform for Event Video Gathering and Sharing;
