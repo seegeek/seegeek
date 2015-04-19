@@ -1,0 +1,9 @@
+<resources>
+    <string name="app_name">SeeGeek</string>
+    <string name="fragment_home">主页</string>
+    <string name="fragment_seegeek">G</string>
+    <string name="fragment_setting">我</string>
+    <string name="info_home">软件主页，展示热点直播。</string>
+    <string name="info_seegeek">录制界面，在这里录制直播。</string>
+    <string name="info_setting">设置及个人信息。</string>
+</resources>
