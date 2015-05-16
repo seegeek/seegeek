@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+	"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.seegeek.cms.domain.LiveMedia">
+	<!-- 主机实体对象与数据库字段的映射 -->
+	<resultMap type="livemediaVo" id="livemediaMap">
+		<result column="duration" property="duration"/>
+		<result column="start_time" property="start_time"/>
+		<result column="end_time" property="end_time"/>
+		<result column="title" property="title"/>
+		<result column="tag" property="tag"/>
+		<result column="description" property="description"/>
+		<result column="location" property="location"/>
+		<result column="type" property="type"/>
+		<result column="seen_num" property="seen_num"/>
+		<result column="seening_num" property="seening_num"/>
+		<result column="seen_username" property="seen_username"/>
+		<result column="seening_username" property="seening_username"/>
+		<result column="report_num" property="report_num"/>
+		<result column="report_username" property="report_username"/>
+		<result column="get_praise_num" property="get_praise_num"/>
+		<result column="get_like_num" property="get_like_num"/>
+		<result column="comment_num" property="comment_num"/>
+		<result column="reported_num" property="reported_num"/>
+	</resultMap>
+	<!-- 查询所有用户信息"-->
+	<select id="getAll" parameterType="livemediaVo" resultType="com.seegeek.cms.domain.LiveMedia">
+		select *  from live_media 
+	</select>
+	<!-- 插入数据 -->
+	<insert id="addObject" parameterType="livemediaVo">
+		insert into live_media(start_time,title,tag,description,location,type)
+		values (now(),#{title},#{tag},#{description},#{location},#{type})
+	</insert>
+	
+</mapper>

@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+	"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.seegeek.cms.domain.User">
+	<!-- 主机实体对象与数据库字段的映射 -->
+	<resultMap type="userVo" id="userMap">
+		<result column="loginName" property="loginName"/>
+		<result column="mobilePhone" property="mobilePhone"/>
+		<result column="email" property="email"/>
+		<result column="IMEI" property="IMEI"/>
+		<result column="location_x" property="location_x"/>
+		<result column="location_y" property="location_y"/>
+		<result column="nickname" property="nickname"/>
+		<result column="personal_signature" property="personal_signature"/>
+		<result column="home_address" property="home_address"/>
+		<result column="work_address" property="work_address"/>
+		<result column="sex" property="sex"/>
+	</resultMap>
+	<!-- 查询所有用户信息"-->
+	<select id="getAll" parameterType="userVo" resultType="com.seegeek.cms.domain.User">
+		select *  from user 
+	</select>
+	<!-- 插入数据 -->
+		<insert id="addObject" parameterType="userVo">
+		insert into user(id,loginName,mobilePhone,email,IMEI,location_x,location_y,state,data_time)
+		values (#{id},#{loginName},#{mobilePhone},#{email},#{IMEI},#{location_x},#{location_y},#{state},now())
+	</insert>
+	
+</mapper>

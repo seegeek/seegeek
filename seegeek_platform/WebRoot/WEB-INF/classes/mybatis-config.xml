@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE configuration PUBLIC "-//mybatis.org//DTD Config 3.0//EN" "http://mybatis.org/dtd/mybatis-3-config.dtd">
+
+<configuration>
+	<!-- 用来加载配置文件中使用的java对象 -->
+	<settings>
+		<setting name="cacheEnabled" value="true"/> 
+		<setting name="lazyLoadingEnabled" value="true"/>
+	</settings>
+	<typeAliases>
+		<typeAlias alias="userVo" type="com.seegeek.cms.domain.User"/>
+		<typeAlias alias="livemediaVo" type="com.seegeek.cms.domain.LiveMedia"/>
+	</typeAliases>
+	
+	<!-- 用来加载配置ORM 映射文件 -->
+	<mappers>
+		<!-- 用户操作 -->
+	    <mapper resource="com/seegeek/cms/domain/mapper/User.xml"/>
+	    <mapper resource="com/seegeek/cms/domain/mapper/LiveMedia.xml"/>
+	</mappers>
+</configuration>
