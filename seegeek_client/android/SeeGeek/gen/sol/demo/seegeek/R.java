@@ -31,7 +31,7 @@ or to a theme attribute in the form "<code>?[<i>package</i>:][<i>type</i>:]<i>na
         public static final int color_button_height=0x7f070002;
         /** 
          14.5 = Seekbar thumb width - border width, but it depends on the width
-	     of the seek bar icon.
+         of the seek bar icon.
     
          */
         public static final int color_picker_gradient_margin=0x7f070001;
@@ -61,10 +61,13 @@ or to a theme attribute in the form "<code>?[<i>package</i>:][<i>type</i>:]<i>na
         public static final int ic_launcher=0x7f020008;
         public static final int ic_menu_search_holo_light=0x7f020009;
         public static final int ic_menu_share_holo_light=0x7f02000a;
-        public static final int notification=0x7f02000b;
-        public static final int notification64=0x7f02000c;
-        public static final int ondemand_overlay=0x7f02000d;
-        public static final int pageinfo_warning_major=0x7f02000e;
+        public static final int ic_warning=0x7f02000b;
+        public static final int notification=0x7f02000c;
+        public static final int notification64=0x7f02000d;
+        public static final int ondemand_overlay=0x7f02000e;
+        public static final int refresh_blue=0x7f02000f;
+        public static final int refresh_gray=0x7f020010;
+        public static final int verify_checkmark=0x7f020011;
     }
     public static final class id {
         public static final int ampm=0x7f09001c;

@@ -40,8 +40,11 @@ public final class R {
 		public static final int dropdown_popup_background_up = 0x7f020007;
 		public static final int ic_menu_search_holo_light = 0x7f020009;
 		public static final int ic_menu_share_holo_light = 0x7f02000a;
-		public static final int ondemand_overlay = 0x7f02000d;
-		public static final int pageinfo_warning_major = 0x7f02000e;
+		public static final int ic_warning = 0x7f02000b;
+		public static final int ondemand_overlay = 0x7f02000e;
+		public static final int refresh_blue = 0x7f02000f;
+		public static final int refresh_gray = 0x7f020010;
+		public static final int verify_checkmark = 0x7f020011;
 	}
 	public static final class id {
 		public static final int ampm = 0x7f09001c;

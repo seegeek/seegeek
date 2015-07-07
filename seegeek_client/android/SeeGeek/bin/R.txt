@@ -23,10 +23,13 @@ int drawable dropdown_popup_background_up 0x7f020007
 int drawable ic_launcher 0x7f020008
 int drawable ic_menu_search_holo_light 0x7f020009
 int drawable ic_menu_share_holo_light 0x7f02000a
-int drawable notification 0x7f02000b
-int drawable notification64 0x7f02000c
-int drawable ondemand_overlay 0x7f02000d
-int drawable pageinfo_warning_major 0x7f02000e
+int drawable ic_warning 0x7f02000b
+int drawable notification 0x7f02000c
+int drawable notification64 0x7f02000d
+int drawable ondemand_overlay 0x7f02000e
+int drawable refresh_blue 0x7f02000f
+int drawable refresh_gray 0x7f020010
+int drawable verify_checkmark 0x7f020011
 int id ampm 0x7f09001c
 int id arrow_image 0x7f090024
 int id color_button_swatch 0x7f090027
