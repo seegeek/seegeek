@@ -14,6 +14,8 @@ import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
 import android.os.Environment;
+import android.os.Handler;
+import android.os.Message;
 import android.util.Log;
 import android.view.KeyEvent;
 import android.webkit.WebView;
@@ -35,6 +37,7 @@ public class MainActivity extends Activity {
 	private final String SG_CONFIG_FILE = "sg_config.xml";
 	private final String ASSETSPAGE = "file:///android_asset/default.html";
 	private String mainUrl = "file:///android_asset/default.html";
+    private final int GETMAINURL = 0;
 
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
@@ -66,24 +69,38 @@ public class MainActivity extends Activity {
 			mLocationClient.registerLocationListener(new MyLocationListener());
 			initBaiduLocation();
 			mLocationClient.start();
-
+			
 			new Thread(new Runnable() {
 				public void run() {
 					try {
 						Thread.sleep(1000);
 					} catch (InterruptedException e) {
-						// TODO Auto-generated catch block
 						e.printStackTrace();
 					}
 					Utils.getConfigFromServer(SG_CONFIG_PATH, SG_CONFIG_FILE);
-					mainUrl = Utils.getUrl(SG_CONFIG_PATH, SG_CONFIG_FILE);
+					Log.e(TAG, "getConfigFromServer");
 				}
 			}).start();
 
 			mainUrl = Utils.getUrl(SG_CONFIG_PATH, SG_CONFIG_FILE);
-			Log.e(TAG, "go to index " + mainUrl);
 			if (mainUrl == null) {
 				mXWalkView.load(ASSETSPAGE, null);
+				new Thread(new Runnable() {
+					public void run() {
+						while (mainUrl == null) {
+							try {
+								Thread.sleep(1000);
+							} catch (InterruptedException e) {
+								e.printStackTrace();
+							}
+							mainUrl = Utils.getUrl(SG_CONFIG_PATH, SG_CONFIG_FILE);
+						}
+						Log.e(TAG, "getUrl: " + mainUrl);
+						Message message = new Message();
+	                    message.what = GETMAINURL;
+	                    myHandler.sendMessage(message);
+					}
+				}).start();
 			} else {
 				Toast.makeText(this, "server is " + mainUrl, Toast.LENGTH_SHORT)
 				.show();
@@ -91,6 +108,21 @@ public class MainActivity extends Activity {
 			}
 		}
 	}
+	
+	@SuppressLint("HandlerLeak")
+	Handler myHandler = new Handler() {
+		public void handleMessage(Message msg) {
+               switch (msg.what) {
+                    case GETMAINURL:
+						Log.e(TAG, "load: " + mainUrl);
+                    	mXWalkView.load(mainUrl, null);
+                    	break;
+                    default:
+                    	break;
+               }
+               super.handleMessage(msg);
+          }
+     };
 
 	@Override
 	protected void onPause() {

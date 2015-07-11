@@ -2,11 +2,9 @@ package sol.demo.seegeek;
 
 import com.baidu.location.BDLocation;
 
-import android.annotation.SuppressLint;
 import android.app.Notification;
 import android.app.NotificationManager;
 import android.app.PendingIntent;
-import android.content.ComponentName;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
@@ -23,11 +21,16 @@ public class AndJs {
     private NotificationManager mNotificationManager;
 	private TelephonyManager tm;
     private static int MOOD_NOTIFICATIONS = R.layout.activity_main;
+    private boolean isSoundEnable = false;
 
 	public AndJs(Context context){
 		this.mContext = context;
         mNotificationManager = (NotificationManager) mContext.getSystemService(Context.NOTIFICATION_SERVICE);
 		tm = (TelephonyManager) mContext.getSystemService(Context.TELEPHONY_SERVICE);
+	}
+
+	public static void updateLocation(BDLocation l) {
+		location = l;
 	}
 	
 	@JavascriptInterface
@@ -87,37 +90,23 @@ public class AndJs {
 	}
 	
 	@JavascriptInterface
+	public void setSoundEnable(boolean b) {
+		Log.i(MainActivity.TAG, "setSoundEnable = " + b);
+		isSoundEnable = b;
+	}
+	
+	@JavascriptInterface
 	public void showNotification(String title, String str) {
 		Log.i(MainActivity.TAG, "showNotification = " + title + " | " + str);
-//		showRemoteNotification(R.drawable.ic_launcher, str);
-		showDefaultNotification(title, str, R.drawable.notification64, Notification.DEFAULT_ALL);
-//		mNotificationManager.cancel(R.layout.activity_main);
-	}
-
-	public static void updateLocation(BDLocation l) {
-		location = l;
+		if (isSoundEnable) {
+			showDefaultNotification(title, str, R.drawable.notification64, Notification.DEFAULT_ALL);
+		} else {
+			showDefaultNotification(title, str, R.drawable.notification64, Notification.DEFAULT_ALL - Notification.DEFAULT_SOUND);
+		}
 	}
     
-    @SuppressLint("NewApi")
-	private PendingIntent makeDefaultIntent() {
-        Intent[] intents = new Intent[4];
-        intents[0] = Intent.makeRestartActivityTask(new ComponentName(mContext, MainActivity.class));
-        // "App"
-        intents[1] = new Intent(mContext, MainActivity.class);
-        intents[1].putExtra("com.example.android.apis.Path", "App");
-        // "App/Notification"
-        intents[2] = new Intent(mContext, MainActivity.class);
-        intents[2].putExtra("com.example.android.apis.Path", "App/Notification");
-        // Now the activity to display to the user.
-        intents[3] = new Intent(mContext, MainActivity.class);
-
-        PendingIntent contentIntent = PendingIntent.getActivities(mContext, 0,
-                intents, PendingIntent.FLAG_UPDATE_CURRENT);
-        return contentIntent;
-    }
 	@SuppressWarnings("deprecation")
 	private void showDefaultNotification(String title, String content, int icon, int type) {
-//		PendingIntent contentIntent = makeDefaultIntent();
 		Intent intent = new Intent();
         intent.setClass(mContext, MainActivity.class);
         Bundle bundle = new Bundle();
