@@ -1,5 +1,8 @@
 package com.seegeek.cms.service;
 
+import java.util.List;
+import java.util.Map;
+
 import com.seegeek.cms.domain.LiveMedia;
 
 
@@ -10,5 +13,6 @@ import com.seegeek.cms.domain.LiveMedia;
  * 类说明
  */
 public interface ILiveMediaService extends IBaseService<LiveMedia>{
-
+	List<LiveMedia> getListByUserId(String getListByuserid, Map<String,Object> maps);
+	int getListByUserIdLiveMediaId(String getListByuserid, Map<String,Object> map);
 }

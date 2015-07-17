@@ -36,7 +36,7 @@ public class UserAction extends BaseAction{
 		System.out.println("1111111111");
 		return "index";
 	}
-	
+
 	
 	@RequestMapping(params = "method=list")
 	public String list(ModelMap map, HttpServletRequest request,	HttpServletResponse response) {
@@ -58,20 +58,31 @@ public class UserAction extends BaseAction{
 	@RequestMapping(params = "method=add")
 	public String add(ModelMap map, HttpServletRequest request,	HttpServletResponse response) {
 		User userForm=new User();
-		userForm.setId(UUID.randomUUID().toString());
 		userForm.setEmail(request.getParameter("email"));
 		userForm.setLoginName(request.getParameter("loginName"));
 		userService.add(Constance.ADD_OBJECT, userForm);
 		return "redirect:/UserAction.do?method=list";
 	}
+	
+	@RequestMapping(params = "method=edit")
+	public String edit(ModelMap map, HttpServletRequest request,	HttpServletResponse response) {
+		User userForm=new User();
+		userForm.setId(Integer.valueOf(request.getParameter("id")));
+		userForm.setEmail(request.getParameter("email"));
+		userForm.setPasswd(request.getParameter("passwd"));
+		userForm.setNickname(request.getParameter("nickname"));
+		userForm.setMobilePhone(request.getParameter("mobilePhone"));
+		userForm.setIMEI(request.getParameter("IMEI"));
+		userService.update(Constance.UPDATE_OBJECT, userForm);
+		return "redirect:/UserAction.do?method=list";
+	}
 	@RequestMapping(params = "method=editUI")
 	public String editUI(ModelMap map, HttpServletRequest request,	HttpServletResponse response) {
-		User user = getLoginUserBySesson(request);
-		List<User> userList = userService.getAll(Constance.GET_ALL);
-		System.out.println(userList);
-		request.setAttribute("userList", userList);
+		Integer id=Integer.valueOf(request.getParameter("id"));
+		User user=userService.get(Constance.GET_ONE, id);
+		request.setAttribute("user", user);
 		 System.out.println("1111111111");
-		 return "User/add";
+		 return "User/edit";
 	}
 	
 	

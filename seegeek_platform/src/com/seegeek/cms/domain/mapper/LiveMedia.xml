@@ -19,18 +19,158 @@
 		<result column="report_num" property="report_num"/>
 		<result column="report_username" property="report_username"/>
 		<result column="get_praise_num" property="get_praise_num"/>
+		<result column="get_collect_num" property="get_collect_num"/>
 		<result column="get_like_num" property="get_like_num"/>
 		<result column="comment_num" property="comment_num"/>
 		<result column="reported_num" property="reported_num"/>
+		<result column="roomId" property="roomId"/>
+		<result column="recordingId" property="recordingId"/>
+		<result column="play_type" property="play_type"/>
+		<result column="start_date" property="start_date"/>
 	</resultMap>
 	<!-- 查询所有用户信息"-->
 	<select id="getAll" parameterType="livemediaVo" resultType="com.seegeek.cms.domain.LiveMedia">
 		select *  from live_media 
 	</select>
+	<select id="getOne" parameterType="livemediaVo" resultType="com.seegeek.cms.domain.LiveMedia">
+		select *  from live_media where id=#{id}
+	</select>
+	<select id="getRoomId" parameterType="livemediaVo" resultType="com.seegeek.cms.domain.LiveMedia">
+		select  *  from live_media where roomId=#{roomId} and play_type="0"
+	</select>
+	
+	
+	<select id="getListByUserId" parameterType="map" resultMap="ClassResultMap">
+SELECT
+	lm.id,
+	lm.title,
+	lm.tag,
+	lm.seen_num,
+	lm.type,
+	lm.icon,
+	lm.location,
+	lm.description,
+	lm.get_praise_num,
+	lm.comment_num,
+	lm.get_collect_num,
+	lm.roomId,
+	lm.start_time,
+	lm.start_date,
+	u.nickname,
+	u.id as userId,
+	u.icon as user_icon,
+	ulm.id as ulmId
+FROM
+	live_media lm,
+	user_livemedia ulm,
+	user u
+WHERE
+	lm.id = ulm.livemediaId
+	AND ulm.userId = u.id
+		   <trim>
+		   	<if test="userId!=null">
+		  	 	and ulm.userId=#{userId}
+		   	</if>
+		   	  <if test="play_type != null">
+	             and   play_type= #{play_type}
+	            </if>
+			  <if test="title != null">
+	             and   title like  "%"#{title}"%"
+	            </if>
+			</trim>
+			order by start_time 
+	</select>
+	
+	
+	<resultMap type="com.seegeek.cms.domain.LiveMedia" id="ClassResultMap">
+        <id property="id" column="livemediaId"/>
+         <result property="id" column="id"/>
+         <result property="title" column="title"/>
+         <result property="tag" column="tag"/>
+         <result property="seen_num" column="seen_num"/>
+         <result property="type" column="type"/>
+         <result property="icon" column="icon"/>
+         <result property="location" column="location"/>
+         <result property="description" column="description"/>
+         <result property="get_praise_num" column="get_praise_num"/>
+         <result property="get_collect_num" column="get_collect_num"/>
+         <result property="comment_num" column="comment_num"/>
+         <result property="roomId" column="roomId"/>
+         <result property="start_time" column="start_time"/>
+         <result property="start_date" column="start_date"/>
+         <association property="user" column="userId" select="getUserById"/>
+       	<!-- <association property="user" column="ulmId" javaType="com.seegeek.cms.domain.User">
+            <id property="id" column="userId"/>
+            <result property="nickname" column="nickname"/>
+            <result property="icon" column="user_icon"/>
+        </association>-->
+    </resultMap>
+	
+	
+	<select id="getUserById" parameterType="Integer" resultType="com.seegeek.cms.domain.User">
+		select  id,nickname,icon as user_icon from user where id = #{id}
+	</select>
+	
+	
+	<select id="getListEntityByUserId" parameterType="map" resultType="com.seegeek.cms.domain.LiveMedia">
+		select * from live_media lm ,user_livemedia ulm where lm.id=ulm.livemediaId and ulm.userId=#{userId}
+		   <trim>
+			  <if test="title != null">
+	             and   title like  "%"#{title}"%"
+	            </if>
+			</trim>
+	</select>
+	
+	
+	
 	<!-- 插入数据 -->
-	<insert id="addObject" parameterType="livemediaVo">
-		insert into live_media(start_time,title,tag,description,location,type)
-		values (now(),#{title},#{tag},#{description},#{location},#{type})
+	<insert id="addObject" useGeneratedKeys="true" keyProperty="id" parameterType="livemediaVo">
+		insert into live_media(start_time,start_date,title,tag,description,location,type,icon,roomId,
+		recordingId,play_type)
+		values (now(),curdate(),#{title},#{tag},#{description},#{location},#{type},#{icon},#{roomId},#{recordingId},#{play_type})
+	</insert>
+	<insert id="addUserLivemedia" parameterType="map">
+		insert into user_livemedia(livemediaId,userId)
+		values (#{livemediaId},#{userId})
 	</insert>
 	
+	<!-- 查询中间表 -->
+	<select id="getUserLivemedia" parameterType="map"  resultType="int">
+		select count(id)  from user_livemedia where livemediaId=#{livemediaId}
+		and userId =#{userId}
+	</select>
+	
+	
+
+	
+		<!--更新实体信息  -->
+	<update id="updateObject" parameterType="livemediaVo">
+		update live_media  set title=#{title},tag=#{tag},
+		description=#{description},
+		type=#{type},
+		seen_num=#{seen_num},
+		location=#{location},
+		get_praise_num=#{get_praise_num},
+		report_num=#{report_num},
+		reported_num=#{reported_num},
+		comment_num=#{comment_num},
+		get_collect_num=#{get_collect_num}
+		where id=#{id}
+	</update>
+	<!-- 转换视频类型 将直播的状态改为点播 -->
+	<update id="convert_media" parameterType="livemediaVo">
+		update live_media  set play_type=#{play_type}
+		where roomId=#{roomId}
+	</update>
+	<delete id="deleteObject" parameterType="map">  
+        delete from live_media where id = #{id}  
+    </delete>  
+	<delete id="deleteAll" parameterType="int">  
+        delete from live_media
+    </delete>  
+    
+    
+  
+
+
 </mapper>

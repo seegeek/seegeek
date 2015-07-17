@@ -1,5 +1,8 @@
 package com.seegeek.cms.service.impl;
 
+import java.util.List;
+import java.util.Map;
+
 import org.springframework.stereotype.Service;
 
 import com.seegeek.cms.dao.IUserDao;
@@ -15,5 +18,7 @@ import com.seegeek.cms.service.IUserService;
  */
 @Service
 public class UserServiceImpl extends BaseServiceImpl<User, IUserDao> implements IUserService{
-
+	public List<String> getListByUserId(String mybatis, Map<String, Object> map) {
+		return genericDao.query(mybatis, map);
+	}
 }

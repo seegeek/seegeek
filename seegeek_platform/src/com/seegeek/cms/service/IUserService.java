@@ -1,5 +1,8 @@
 package com.seegeek.cms.service;
 
+import java.util.List;
+import java.util.Map;
+
 import com.seegeek.cms.domain.User;
 
 /**
@@ -9,5 +12,5 @@ import com.seegeek.cms.domain.User;
  * 类说明
  */
 public interface IUserService extends IBaseService<User>{
-
+ List<String> getListByUserId(String mybatis, Map<String, Object> map);
 }

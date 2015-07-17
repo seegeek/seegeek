@@ -8,7 +8,7 @@ package com.seegeek.cms.domain;
  */
 public class User {
 
-	private String id;
+	private Integer id;
 	//登录名
 	private String loginName;
 	//昵称
@@ -25,11 +25,8 @@ public class User {
 	private String email;
 	//手机唯一吗
 	private String IMEI;
-
 	private String location_x;
-
 	private String location_y;
-
 	//家庭地址
 	private String home_address;
 	//工作地址
@@ -41,11 +38,12 @@ public class User {
 	//状态
 	private Integer state = 0;
 
-	public String getId() {
+
+	public Integer getId() {
 		return id;
 	}
 
-	public void setId(String id) {
+	public void setId(Integer id) {
 		this.id = id;
 	}
 

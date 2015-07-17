@@ -39,7 +39,6 @@ public class MessageJson {
 	private String taskId;
 	
 	/**
-	 * 姜海深，虚拟机运行时间,2012-09-03
 	 * 在VMAction.java中queryStatus使用。
 	 */
 	private String vmRunningTime;
@@ -55,7 +54,6 @@ public class MessageJson {
 	private List items;
 	
 	/**
-	 * 2012-09-05 姜海深。当数据库插入，删除，更新出现错误时，
 	 * 返回一个错误的messagejson事调用，虚拟机操作service方法调用
 	 * @param errorMsg
 	 * @return
@@ -154,5 +152,9 @@ public class MessageJson {
 	public void setVmPcid(String vmPcid) {
 		this.vmPcid = vmPcid;
 	}
-
+	public static void main(String args[])
+	{
+		
+		
+	}
 }
