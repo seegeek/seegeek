@@ -274,7 +274,8 @@ public class UserRest {
 		map.put("username", UserId);
 		map.put("IMEI", IMEI);
 		map.put("room_name", RoomName);
-		map.put("location", "");
+		map.put("Longitude", Longitude);
+		map.put("Latitude", Latitude);
 		//		map.put("longitude", longitude);
 		//		map.put("latitude", latitude);
 		JSONObject bodyInfo = JSONObject.fromObject(map);

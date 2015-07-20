@@ -656,10 +656,13 @@ public class ItemRest {
 			entity.setLocation(Location==""?entity.getLocation():Location);
 			entity.setId(Integer.valueOf(ItemId));
 			entity.setPlay_type(PLAYTYPE.LIVE.ordinal());
+			
 			liveMediaService.update(Constance.UPDATE_OBJECT, entity);
-			String url = "http://"+Param.licode_server+":5000/api?id="+user.getIMEI()+"&token=token&longitude="+Longitude+"&latitude="+Latitude+"&Role="+Role;
+			String url = "http://"+Param.licode_server+":5000/api?id="+user.getIMEI()+"&token=token&longitude="+Longitude+"&latitude="+Latitude+"&Role="+Role+"&Location="+Location
+			+"&ItemId="+entity.getId()+"&nickname="+user.getNickname()+"&title="+entity.getTitle();
 			String info =  HttpUtils.GetInfo(url,"");
-			System.out.println(info);
+			logger.info(url);
+			logger.info("info----"+info);
 			}
 		} catch (Exception e) {
 			e.printStackTrace();
