@@ -24,7 +24,7 @@ import org.xml.sax.SAXException;
 import android.util.Log;
 
 public class Utils {
-	private final static String TAG = "TTT";
+	private final static String TAG = MainActivity.TAG;
 
 	public static String getUrl(String pathName, String fileName) {
 		String fileSD = pathName + "/" + fileName;
@@ -61,8 +61,9 @@ public class Utils {
 		return main;
 	}
 
-	public static boolean getConfigFromServer(String pathName, String fileName) {
-		HttpGet httpRequest = new HttpGet("http://58.53.219.69/sg_config.xml");
+	public static boolean getConfigFromServer(String remoteUrl, String pathName, String fileName) {
+		Log.d(TAG, "getConfigFromServer " + remoteUrl);
+		HttpGet httpRequest = new HttpGet(remoteUrl);
 		String strResult = "";
 		try {
 			HttpClient httpClient = new DefaultHttpClient();
