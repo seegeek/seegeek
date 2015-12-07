@@ -40,6 +40,15 @@ public class LiveMedia {
 	 * 直播地理位置
 	 */
 	private String location;
+	
+	/**
+	 * 纬度
+	 */
+	private String latitude;
+	/**
+	 * 经度
+	 */
+	private String longitude;
 	/**
 	 * 直播类别
 	 */
@@ -99,7 +108,7 @@ public class LiveMedia {
 	
 	private String roomId;
 	
-	private String icon;
+	private String frame;
 	//0是直播 1 是点播
 	private Integer play_type;
 	//
@@ -261,12 +270,20 @@ public class LiveMedia {
 		this.reported_num = reported_num;
 	}
 
-	public String getIcon() {
-		return icon;
+
+
+	/**
+	 * @return the frame
+	 */
+	public String getFrame() {
+		return frame;
 	}
 
-	public void setIcon(String icon) {
-		this.icon = icon;
+	/**
+	 * @param frame the frame to set
+	 */
+	public void setFrame(String frame) {
+		this.frame = frame;
 	}
 
 	public String getRoomId() {
@@ -315,6 +332,22 @@ public class LiveMedia {
 
 	public void setStart_date(String start_date) {
 		this.start_date = start_date;
+	}
+
+	public String getLatitude() {
+		return latitude;
+	}
+
+	public void setLatitude(String latitude) {
+		this.latitude = latitude;
+	}
+
+	public String getLongitude() {
+		return longitude;
+	}
+
+	public void setLongitude(String longitude) {
+		this.longitude = longitude;
 	}
 
 

@@ -1,6 +1,5 @@
-#Tue May 12 13:26:38 CST 2015
 eclipse.preferences.version=1
-encoding//WebRoot/WEB-INF/views/User/add.html=UTF-8
-encoding//WebRoot/WEB-INF/views/User/edit.html=UTF-8
-encoding//WebRoot/WEB-INF/views/User/index.html=UTF-8
+encoding//WebContent/WEB-INF/views/User/add.html=UTF-8
+encoding//WebContent/WEB-INF/views/User/edit.html=UTF-8
+encoding//WebContent/WEB-INF/views/User/index.html=UTF-8
 encoding/<project>=UTF-8

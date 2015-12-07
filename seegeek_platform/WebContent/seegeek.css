@@ -1,0 +1,13 @@
+@CHARSET "UTF-8";
+
+.div1 {
+	background-color: lightgray;
+	border: 1px solid black;
+	height: 50%;
+	width: 100%;
+	font-weight: bold;
+	text-align: center;
+	padding: 30px;
+	padding-left: 10px;
+}
+

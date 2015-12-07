@@ -1,0 +1,293 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+<!-- 不允许移动端放大页面 --> 
+    <meta name="viewport" content="width=device-width, initial-scale=0.5, maximum-scale=0.5, user-scalable=no">
+<!-- 让部分国产浏览器默认采用高速模式渲染页面 --> 
+<meta name="renderer" content="webkit">
+
+    <!-- 调用在线的新 Bootstrap 核心 CSS 文件 --> 
+    <link rel="stylesheet" href="http://cdn.bootcss.com/bootstrap/3.3.4/css/bootstrap.min.css">
+    <title>discover</title>
+    <!--  JS -->
+    <script src="js/and.js" ></script>
+    <script src="js/angular.js" ></script>
+    <script src="js/common.js" ></script>
+    <script src="js/crypt.js" ></script>
+    <script src="js/erizo.js" ></script>
+    <script src="js/jquery.mobile.multiview.js" ></script>
+    <script src="js/jquery.mobile.scrollview.js" ></script>
+    <script src="js/jquery.mobile-1.4.5.js" ></script>
+    <script src="js/jquery.mobile-1.4.5.min.js" ></script>
+    <script src="js/jquery-1.11.2.js" ></script>
+    <script src="js/jquery-1.11.2.min.js" ></script>
+    <script src="js/main.js"></script>
+    <script src="js/media.js"></script>
+    <script src="js/record.js" ></script>
+    <script src="js/show.js"></script>
+    <script src="js/user.js"></script>
+    <!-- Bootstrap core CSS -->
+
+   <link href="css/bootstrap.min.css" rel="stylesheet"> 
+   <link href="css/discover.css" rel="stylesheet" type="text/css">
+    <link href="css/common.css" rel="stylesheet" type="text/css">
+  </head>
+
+  <body onload="indexLoad()">
+  <!--top start-->
+    <div class="top" >
+        <div class="top_left">
+           <span class="glyphicon glyphicon-th-list"></span>
+        </div>
+        <div class=" top_center">
+        	<a href="discover_pub.html">
+            <span class="green">GS</span>ee
+            </a>
+        </div>
+        <div class="top_right">
+           <a href=""><span class="glyphicon glyphicon-search"></span></a>
+        </div>
+    </div>
+    <div class="clear"></div>
+ 	<!-- conter start -->
+    <div class="container" id="Content">
+      
+      <div class="row" id="all">
+        <!-- 1 -->
+        <div class="col-md-4" >
+          	<div class="conter" id="Cont">
+            	<a href="">
+                	<!--此处背景图片需换成视频-->
+                    <div class="conter_bg" id="Thumbnail"><img src="image/bg.jpg" /></div>
+                    <div  class="conter_top">
+                        <div class="pic" ><span class="
+glyphicon glyphicon-user"></span></div>
+                        <div class="text" id="SawNum">102</div>
+                    </div><!--conter_top-->
+                    <div  class="conter_title" id="Title">
+                        与锤头鲨面对面,我们四目相对中.....
+                    </div>
+                    <div  class="conter_tag">
+                    	<span class="glyphicon glyphicon-tag" id="Tag"></span>
+                        #锤头鲨#夜潜#船潜
+                    </div>
+                    <div  class="conter_bottom">
+                    </div>
+                    <div class="conter_div">
+                    
+                        <div class="left">
+                            <table cellpadding="0" cellspacing="0">
+                                <tr >
+                                    <td rowspan="2">
+                                        <div class="box" id="Icon">
+                                            <img src="image/head.jpg" />
+                                        </div>
+                                    </td>
+                                    <td><span id="Nickname">轻舞飞扬</span></td>
+                                </tr>	
+                                 <tr>
+                                    <td>
+                                        <span class="glyphicon glyphicon-map-marker" id="Location">北京市</span>
+                                    </td>
+                                </tr>	
+                           </table>
+                        </div>
+                        <!--left-->
+                            <div class="right">
+                        <div class="right_1">
+                            <div class="pic" ><span class="glyphicon glyphicon-thumbs-up"></span></div>
+                            <div class="text" id="PraiseNum">10</div>
+                        </div>
+                        <div class="right_1">
+                            <div class="pic"><span class="glyphicon glyphicon-comment" ></span></div>
+                            <div class="text" id="CommentNum">10</div>
+                         </div>
+                        <div class="right_1">
+                            <div class="pic"><span class="glyphicon glyphicon-heart" ></span></div>
+                            <div class="text" id="LikeNum">10</div>
+                        </div>
+                   </div><!--right-->
+                    </div><!--conter_div-->
+                </a>
+        	 </div><!--conter-->
+        </div><!--col-md-4 1-->
+       
+       
+       	<!-- 2 -->
+        	        <div class="col-md-4" >
+          	<div class="conter" id="Cont">
+            	<a href="">
+                	<!--此处背景图片需换成视频-->
+                    <div class="conter_bg" id="Thumbnail"><img src="image/bg.jpg" /></div>
+                    <div  class="conter_top">
+                        <div class="pic" ><span class="
+glyphicon glyphicon-user"></span></div>
+                        <div class="text" id="SawNum">102</div>
+                    </div><!--conter_top-->
+                    <div  class="conter_title" id="Title">
+                        与锤头鲨面对面,我们四目相对中.....
+                    </div>
+                    <div  class="conter_tag">
+                    	<span class="glyphicon glyphicon-tag" id="Tag"></span>
+                        #锤头鲨#夜潜#船潜
+                    </div>
+                    <div  class="conter_bottom">
+                    </div>
+                    <div class="conter_div">
+                    
+                        <div class="left">
+                            <table cellpadding="0" cellspacing="0">
+                                <tr >
+                                    <td rowspan="2">
+                                        <div class="box" id="Icon">
+                                            <img src="image/head.jpg" />
+                                        </div>
+                                    </td>
+                                    <td><span id="Nickname">轻舞飞扬</span></td>
+                                </tr>	
+                                 <tr>
+                                    <td>
+                                        <span class="glyphicon glyphicon-map-marker" id="Location">北京市</span>
+                                    </td>
+                                </tr>	
+                           </table>
+                        </div>
+                        <!--left-->
+                            <div class="right">
+                        <div class="right_1">
+                            <div class="pic" ><span class="glyphicon glyphicon-thumbs-up"></span></div>
+                            <div class="text" id="PraiseNum">10</div>
+                        </div>
+                        <div class="right_1">
+                            <div class="pic"><span class="glyphicon glyphicon-comment" ></span></div>
+                            <div class="text" id="CommentNum">10</div>
+                         </div>
+                        <div class="right_1">
+                            <div class="pic"><span class="glyphicon glyphicon-heart" ></span></div>
+                            <div class="text" id="LikeNum">10</div>
+                        </div>
+                   </div><!--right-->
+                    </div><!--conter_div-->
+                </a>
+        	 </div><!--conter-->
+        </div>
+        <!--col-md-4_2-->
+       	
+        
+        <!-- 3 -->
+        	        <div class="col-md-4" >
+          	<div class="conter" id="Cont">
+            	<a href="">
+                	<!--此处背景图片需换成视频-->
+                    <div class="conter_bg" id="Thumbnail"><img src="image/bg.jpg" /></div>
+                    <div  class="conter_top">
+                        <div class="pic" ><span class="
+glyphicon glyphicon-user"></span></div>
+                        <div class="text" id="SawNum">102</div>
+                    </div><!--conter_top-->
+                    <div  class="conter_title" id="Title">
+                        与锤头鲨面对面,我们四目相对中.....
+                    </div>
+                    <div  class="conter_tag">
+                    	<span class="glyphicon glyphicon-tag" id="Tag"></span>
+                        #锤头鲨#夜潜#船潜
+                    </div>
+                    <div  class="conter_bottom">
+                    </div>
+                    <div class="conter_div">
+                    
+                        <div class="left">
+                            <table cellpadding="0" cellspacing="0">
+                                <tr >
+                                    <td rowspan="2">
+                                        <div class="box" id="Icon">
+                                            <img src="image/head.jpg" />
+                                        </div>
+                                    </td>
+                                    <td><span id="Nickname">轻舞飞扬</span></td>
+                                </tr>	
+                                 <tr>
+                                    <td>
+                                        <span class="glyphicon glyphicon-map-marker" id="Location">北京市</span>
+                                    </td>
+                                </tr>	
+                           </table>
+                        </div>
+                        <!--left-->
+                            <div class="right">
+                        <div class="right_1">
+                            <div class="pic" ><span class="glyphicon glyphicon-thumbs-up"></span></div>
+                            <div class="text" id="PraiseNum">10</div>
+                        </div>
+                        <div class="right_1">
+                            <div class="pic"><span class="glyphicon glyphicon-comment" ></span></div>
+                            <div class="text" id="CommentNum">10</div>
+                         </div>
+                        <div class="right_1">
+                            <div class="pic"><span class="glyphicon glyphicon-heart" ></span></div>
+                            <div class="text" id="LikeNum">10</div>
+                        </div>
+                   </div><!--right-->
+                    </div><!--conter_div-->
+                </a>
+        	 </div><!--conter-->
+        </div>
+        <!--col-md-4_3-->
+       
+      </div><!--row-->
+ </div> <!-- /container -->
+ <!---****-->
+     <div>
+        <br />
+        <br />
+        <br />
+        <br />
+        <br />
+        <br />
+   </div>
+   
+    <!--footer start-->
+    <div class="footer">
+    	<div class="f_left"><a href="discover.html"><span class="glyphicon glyphicon-home"></span></a></div>
+        <div class="f_center"><a href="recording.html"><span class="glyphicon glyphicon-record"></span></a></div>
+        <div class="f_right"><a href="my.html"><span class="glyphicon glyphicon-user"></span></a></div>
+    </div><!--footer end-->
+
+   
+  </body>
+</html>
+<script>
+$(function(){
+//目录的方法
+getItemListEntity();
+});
+function getItemListEntity()
+{
+ $.ajax({  
+                url: '../rest/item/getItemListEntity',  
+                type: 'GET',
+				success : function(data, textStatus, jqXHR) {
+
+				var obj = eval(data);
+				for(var i=0;i<obj.length;i++)
+				{	
+				var icon="../files/"+obj[i].icon;
+				if(icon===undefined)
+				{
+				icon="image/bg.jpg";
+				}
+			$("#all").append("<div class='col-md-4'><div class='conter' id='Cont'><a href='#'><div class='conter_bg' id='Thumbnail'><img src='"+icon+"'/></div><div class='conter_top'><div class='pic'><span class='glyphicon glyphicon-user'></span></div><div class='text' id='SawNum'>"+obj[i].seen_num+"</div></div>"
+			+"<div class='conter_title' id='Title'>"+obj[i].title+"</div><div class='conter_tag'><span class='glyphicon glyphicon-tag' id='Tag'></span>#"+obj[i].type+"</div>"
+			+"	<div class='conter_bottom'></div>"
+			+"<div class='conter_div'><div class='left'><table cellpadding='0' cellspacing='0'><tr><td rowspan='2'><div class='box' id='Icon'><img src='image/head.jpg'/></div></td><td><span id='Nickname'>轻舞飞扬</span></td></tr><tr><td><span class='glyphicon glyphicon-map-marker' id='Location'>"+obj[i].location+"</td></tr></table></div>"
+			+"	<div class='right'><div class='right_1'> <div class='pic'> <span class='glyphicon glyphicon-thumbs-up'></span></div> <div class='text' id='PraiseNum'>"+obj[i].praise_num+"</div>  </div>"
+			+"<div class='right_1'><div class='pic'><span class='glyphicon glyphicon-comment'></span></div><div class='text' id='CommentNum'>"+obj[i].comment_num+"</div></div>"
+			+"	<div class='right_1'><div class='pic'><span class='glyphicon glyphicon-heart'></span></div><div class='text' id='LikeNum'>"+obj[i].comment_num+"</div>	</div>	</div>												</div>						</a>      </div>    </div>");
+			}
+			},
+			dataType : "json"
+                });  
+}
+</script>

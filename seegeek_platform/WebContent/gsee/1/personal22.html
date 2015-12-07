@@ -1,0 +1,403 @@
+﻿<!DOCTYPE html>
+<html lang="zh-CN">
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+<!-- 不允许移动端放大页面 --> 
+    <meta name="viewport" content="width=device-width, initial-scale=0.5, maximum-scale=0.5, user-scalable=no">
+<!-- 让部分国产浏览器默认采用高速模式渲染页面 --> 
+<meta name="renderer" content="webkit">
+	<script src="js/jquery-1.11.2.js" ></script>
+
+	<script src="js/and.js" ></script>
+    <script src="js/angular.js" ></script>
+    <script src="js/common.js" ></script>
+    <script src="js/crypt.js" ></script>
+    <script src="js/erizo.js" ></script>
+
+    <script src="js/jquery.mobile-1.4.5.js" ></script>
+ 
+   
+    
+ <!--   <script src="js/user.js"></script>-->
+   <script src="js/user1.js"></script>
+   <script type="text/javascript" src="js/jsAddress.js"></script>
+   <script type="text/javascript" src="js/jsAddress.js"></script>
+	<script>
+
+// test for @capture existence
+
+function supported(attribute) {
+  var i = document.createElement('input');
+  i.setAttribute(attribute, true);
+  return !!i[attribute];
+}
+
+
+
+</script>
+    
+<title>个人设置</title>
+<link rel="stylesheet" type="text/css" href="css/common_footer.css"/>
+<link rel="stylesheet" type="text/css" href="css/personal.css"/>
+<link rel="stylesheet" type="text/css" href="css/bootstrap.min.css"/>
+<link rel="stylesheet" type="text/css" href="css/jquery.mobile-1.4.5.css"/>
+</head>
+
+<body>
+<!--personal-->
+<div data-role="page" id="personal">
+<div id="container">
+<!--个人设置-->
+<a href="my.html">
+    <div class="top" div data-role="top" data-position="fixed" >
+        <div class="top_left">
+           <span class="glyphicon glyphicon-chevron-left" aria-hidden="true"></span>
+        </div>
+        <div class=" top_center">
+            个人设置
+        </div>
+        <div class="top_right">
+        </div>
+    </div>
+</a>
+<!--中部-->
+    <div id="body">
+<!--头像-->
+<a href="">
+    	<div class="main_head"  >
+        		<div class="main_name_left">头像</div>
+                <div class="main_name_right" >
+                <label class="btn-file" data-role="add">
+                     <img src="image/touxiang.png" id="Icon" alt="" />
+                     <input type="file" name="image" class="input-file" data-role="uploader" accept="image/*" >
+                </label>
+                </div>
+                <div class="right_2"><span class="glyphicon glyphicon-chevron-right" aria-hidden="true" ></span></div>
+        </div>
+</a>
+<!--昵称-->
+<a href="#nickname">
+		<div class="main_name">
+        		<div class="main_name_left">昵称：</div>
+                <div class="main_name_right" ><span id="Nickname">成了王</span><span class="glyphicon glyphicon-chevron-right" aria-hidden="true"></span></div>
+        </div>
+</a>
+<!--账号-->
+<a href="#acc">
+        <div class="main_name">
+        		<div class="main_name_left">账号：</div>
+                <div class="main_name_right" id="MobilePhone">wangchengnick<span class="glyphicon glyphicon-chevron-right" aria-hidden="true"></span></div>
+        </div>
+</a>
+<!--密码设置-->
+<a href="#">
+        <div class="main_name">
+        		<div class="main_name_left">密码设置：</div>
+                <div class="main_name_right"><span class="glyphicon glyphicon-chevron-right" aria-hidden="true"></span></span></div>
+        </div>
+</a>
+<!--性别-->
+<a href="#gender">
+        <div class="main_name">
+        		<div class="main_name_left">性别：</div>
+                <div class="main_name_right" id="Sex">男<span class="glyphicon glyphicon-chevron-right" aria-hidden="true"></span></div>
+        </div>
+</a>
+<!--个性签名-->
+<a href="#signature">
+        <div class="main_name" id="main_hr">
+        		<div class="main_name_left">个性签名：</div>
+                <div class="main_name_right" id="Personal_signature">Funny man<span class="glyphicon glyphicon-chevron-right" aria-hidden="true"></span></div>
+        </div>
+</a>       
+        <div id="main_enpty"></div>
+<!--家庭住址-->
+<a href="#homeaddress">
+        <div class="main_name">
+        		<div class="main_name_left">家庭住址：</div>
+                <div class="main_name_right" id="Home_address">北京市朝阳区<span class="glyphicon glyphicon-chevron-right" aria-hidden="true"></span></div>
+        </div>
+</a>
+<!--工作地址-->
+<a href="#workaddress">
+        <div class="main_name">
+        		<div class="main_name_left">工作地址：</div>
+                <div class="main_name_right" id="Work_address">北京市海淀区<span class="glyphicon glyphicon-chevron-right" aria-hidden="true"></span></div>
+        </div>
+</a>
+<!--兴趣爱好-->
+<a href="#hobby">
+        <div class="main_name">
+        		<div class="main_name_left">兴趣爱好：</div>
+                <div class="main_name_right"><span style="background:#CCC; border-radius:8%">潜水</span> <span style="background:#CCC; border-radius:8%">户外</span> <span style="background:#CCC; border-radius:8%">打猎</span><span class="glyphicon glyphicon-chevron-right" aria-hidden="true"></span></div>
+        </div>
+</a>
+<!--预设大纲-->
+<a href="#">
+        <div class="main_name">
+        		<div class="main_name_left">预设大纲</div>
+                <div class="main_name_right"><span class="glyphicon glyphicon-chevron-right" aria-hidden="true"></span></div>
+        </div>
+</a>
+<!--结束画面-->
+<a href="#">
+        <div class="main_name">
+        		<div class="main_name_left">结束画面：</div>
+                <div class="main_name_right"><span class="glyphicon glyphicon-chevron-right" aria-hidden="true"></span></div>
+        </div>
+</a>        
+<!--灰色背景-->
+      <!---****-->
+        <div>
+            <br />
+            <br />
+            <br />
+            <br />
+            <br />
+            <br />
+        </div>  
+	</div>
+<!--底部-->
+    <div class="footer">
+    	<div class="f_left"><a href="#hobby"><span class="glyphicon glyphicon-home"></span></a></div>
+        <div class="f_center"><a href="recording.html"><span class="glyphicon glyphicon-record"></span></a></div>
+        <div class="f_right"><a href="my.html"><span class="glyphicon glyphicon-user"></span></a></div>
+    </div>
+</div>
+</div>
+
+<!--昵称-->
+<div data-role="page" id="nickname">
+<div id="container">
+<!--头部-->
+<a href="#personal">
+	<div class="top" >
+        <div class="top_left">
+           <span class="glyphicon glyphicon-chevron-left" aria-hidden="true"></span>
+        </div>
+        <div class=" top_center">
+            	昵称
+        </div>
+        <div class="top_right">
+         	<input id="Sub" onClick="update2()" type="submit" value="确定">
+        </div>
+    </div>
+</a>
+<!--中间-->
+    <div id="main">
+    	<div id="main_center"><input class="Txt" id="Home_address" type="text"></div>
+    </div>
+    
+<!--底部-->
+    <div class="footer">
+    	<div class="f_left"><a href="discover.html"><span class="glyphicon glyphicon-home"></span></a></div>
+        <div class="f_center"><a href="recording.html"><span class="glyphicon glyphicon-record"></span></a></div>
+        <div class="f_right"><a href="my.html"><span class="glyphicon glyphicon-user"></span></a></div>
+    </div>
+</div>
+</div>
+
+<!--账号-->
+<div data-role="page" id="acc">
+<div id="container">
+<!--头部-->
+	<a href="#personal">
+	<div class="top" >
+        <div class="top_left">
+           <span class="glyphicon glyphicon-chevron-left" aria-hidden="true"></span>
+        </div>
+        <div class=" top_center">
+            	账号
+        </div>
+        <div class="top_right">
+         	<input id="Sub" type="submit" onClick="update()" value="确定">
+        </div>
+    </div>
+    </a>
+<!--中间-->
+    <div id="main">
+    	<div id="main_center"><input class="Txt" id="MobilePhone" type="text"></div>
+    </div>
+    
+<!--底部-->
+    <div class="footer">
+    	<div class="f_left"><a href="discover.html"><span class="glyphicon glyphicon-home"></span></a></div>
+        <div class="f_center"><a href="recording.html"><span class="glyphicon glyphicon-record"></span></a></div>
+        <div class="f_right"><a href="my.html"><span class="glyphicon glyphicon-user"></span></a></div>
+    </div>
+</div>
+</div>
+
+<!--密码设置-->
+
+<!--性别-->
+<div data-role="page" id="gender">
+<div id="container">
+<!--头部-->
+<a href="#personal">
+	<div class="top" >
+        <div class="top_left">
+           <span class="glyphicon glyphicon-chevron-left" aria-hidden="true"></span>
+        </div>
+        <div class=" top_center">
+            	性别
+        </div>
+        <div class="top_right">
+         	<input id="Sub" type="submit" onClick="update()" value="确定">
+        </div>
+    </div>
+</a>
+<!--中间-->
+    <div id="main">
+    	<div id="main_center"><input class="Txt" id="upvalue" type="text"></div>
+    </div>
+<!--底部-->
+    <div class="footer">
+    	<div class="f_left"><a href="discover.html"><span class="glyphicon glyphicon-home"></span></a></div>
+        <div class="f_center"><a href="recording.html"><span class="glyphicon glyphicon-record"></span></a></div>
+        <div class="f_right"><a href="my.html"><span class="glyphicon glyphicon-user"></span></a></div>
+    </div>
+</div>
+</div>
+
+<!--个性签名-->
+<div data-role="page" id="signature">
+<div id="container">
+<!--头部-->
+<a href="#personal">
+	<div class="top" >
+        <div class="top_left">
+           <span class="glyphicon glyphicon-chevron-left" aria-hidden="true"></span>
+        </div>
+        <div class=" top_center">
+           	个性签名
+        </div>
+        <div class="top_right">
+         	<input id="Sub" type="submit"onClick="update()" value="确定">
+        </div>
+    </div>
+</a>
+<!--中间-->
+    <div id="main">
+    	<div id="main_center"><input class="Txt" id="upvalue" type="text"></div>
+    </div>
+<!--底部-->
+    <div class="footer">
+    	<div class="f_left"><a href="discover.html"><span class="glyphicon glyphicon-home"></span></a></div>
+        <div class="f_center"><a href="recording.html"><span class="glyphicon glyphicon-record"></span></a></div>
+        <div class="f_right"><a href="my.html"><span class="glyphicon glyphicon-user"></span></a></div>
+    </div>
+</div>
+</div>
+
+<!--家庭住址-->
+<div data-role="page" id="homeaddress">
+<div id="container">
+<!--头部-->
+<a href="#personal">
+    <div class="top" >
+        <div class="top_left">
+          <span class="glyphicon glyphicon-chevron-left" aria-hidden="true"></span>
+        </div>
+        <div class=" top_center">
+            	家庭住址
+        </div>
+        <div class="top_right">
+         	<input id="Sub" type="submit" onClick="update()" value="确定">
+        </div>
+    </div>
+</a>
+<!--中间-->
+    <div id="main">
+    	<div id="main_center1">
+        	省：<select id="cmbProvince"></select>市：<select id="cmbCity"></select>区：<select id="cmbArea"></select>
+            <script type="text/javascript">
+	addressInit('cmbProvince', 'cmbCity', 'cmbArea', '北京', '市辖区', '东城区');
+	addressInit('Select1', 'Select2', 'Select3');
+			</script>
+        </div>
+    </div>
+<!--底部-->
+    <div class="footer">
+    	<div class="f_left"><a href="discover.html"><span class="glyphicon glyphicon-home"></span></a></div>
+        <div class="f_center"><a href="recording.html"><span class="glyphicon glyphicon-record"></span></a></div>
+        <div class="f_right"><a href="my.html"><span class="glyphicon glyphicon-user"></span></a></div>
+    </div>
+</div>
+</div>
+
+<!--工作地址-->
+<div data-role="page" id="workaddress">
+<div id="container">
+<!--头部-->
+<a href="#personal">
+	<div class="top" >
+        <div class="top_left">
+           <span class="glyphicon glyphicon-chevron-left" aria-hidden="true"></span>
+        </div>
+        <div class=" top_center">
+            	工作地址
+        </div>
+        <div class="top_right">
+         	<input id="Sub" type="submit" onClick="update()" value="确定">
+        </div>
+    </div>
+</a>
+<!--中间-->
+    <div id="main">
+    	<div id="main_center1">
+        	省：<select id="cmbProvince"></select>
+			市：<select id="cmbCity"></select>
+			区：<select id="cmbArea"></select>
+            <script type="text/javascript">
+	addressInit('cmbProvince', 'cmbCity', 'cmbArea', '北京', '市辖区', '东城区');
+	addressInit('Select1', 'Select2', 'Select3');
+			</script>
+        </div>
+    </div>
+<!--底部-->
+    <div class="footer">
+    	<div class="f_left"><a href="discover.html"><span class="glyphicon glyphicon-home"></span></a></div>
+        <div class="f_center"><a href="recording.html"><span class="glyphicon glyphicon-record"></span></a></div>
+        <div class="f_right"><a href="my.html"><span class="glyphicon glyphicon-user"></span></a></div>
+    </div>
+</div>
+</div>
+
+<!--兴趣爱好-->
+<div data-role="page" id="hobby">
+<div id="container">
+<!--头部-->
+<a href="#personal">
+	<div class="top" >
+        <div class="top_left">
+           <span class="glyphicon glyphicon-chevron-left" aria-hidden="true"></span>
+        </div>
+        <div class=" top_center">
+           	兴趣爱好
+        </div>
+        <div class="top_right">
+         	<input id="Sub" type="submit" onClick="update()" value="确定">
+        </div>
+    </div>
+</a>
+<!--中间-->
+    <div id="main">
+    	<div id="main_center"><input class="Txt" id="upvalue" type="text"></div>
+    </div>
+<!--底部-->
+    <div class="footer">
+    	<div class="f_left"><a href="discover.html"><span class="glyphicon glyphicon-home"></span></a></div>
+        <div class="f_center"><a href="recording.html"><span class="glyphicon glyphicon-record"></span></a></div>
+        <div class="f_right"><a href="my.html"><span class="glyphicon glyphicon-user"></span></a></div>
+    </div>
+</div>
+</div>
+
+</body>
+</html>
+
+<script>
+
+</script>

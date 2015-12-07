@@ -1,0 +1,116 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<web-app version="2.5" xmlns="http://java.sun.com/xml/ns/javaee"
+ xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://java.sun.com/xml/ns/javaee http://java.sun.com/xml/ns/javaee/web-app_2_5.xsd">
+ <display-name>seegeek</display-name>
+ 
+  <!-- Spring ApplicationContext配置文件的路径,可使用通配符,多个路径用,号分隔此参数用于后面的Spring Context Loader -->
+ <context-param>
+	  <param-name>contextConfigLocation</param-name>
+	  <param-value>classpath*:applicationContext.xml,classpath*:applicationContext-*.xml</param-value>
+ </context-param>
+
+ <!-- 字符集过滤器，本系统java/jsp/js/css 统一使用UTF-8格式 -->
+ <filter>
+  <filter-name>encodingFilter</filter-name>
+  <filter-class>org.springframework.web.filter.CharacterEncodingFilter</filter-class>
+  <init-param>
+   <param-name>encoding</param-name>
+   <param-value>UTF-8</param-value>
+  </init-param>
+ </filter>
+
+ <filter-mapping>
+     <filter-name>encodingFilter</filter-name>
+     <url-pattern>/*</url-pattern>
+ </filter-mapping>
+   <servlet>
+    <description>This is the description of my J2EE component</description>
+    <display-name>This is the display name of my J2EE component</display-name>
+    <servlet-name>RandomCode</servlet-name>
+    <servlet-class>com.seegeek.cms.utils.RandomCode</servlet-class>
+  </servlet>
+
+  <servlet-mapping>
+    <servlet-name>RandomCode</servlet-name>
+    <url-pattern>/RandomCode</url-pattern>
+  </servlet-mapping>
+  
+ 
+ 	 <listener>
+  <listener-class>com.seegeek.cms.lisener.StartContextListener</listener-class>
+ </listener>
+ 
+  <filter>  
+    <filter-name>LoginFilter</filter-name>  
+    <filter-class>com.seegeek.cms.filter.LoginFilter</filter-class>  
+</filter>  
+<filter-mapping>  
+    <filter-name>LoginFilter</filter-name>  
+    <url-pattern>/rest/*</url-pattern>  
+</filter-mapping>
+  <filter>  
+    <filter-name>OPLoginFilter</filter-name>  
+    <filter-class>com.seegeek.cms.filter.OPLoginFilter</filter-class>  
+</filter>  
+<filter-mapping>  
+    <filter-name>OPLoginFilter</filter-name>  
+    <url-pattern>/op/*</url-pattern>  
+</filter-mapping>
+ 
+ 
+
+
+ <!--Spring ApplicationContext 载入配置入口点，由此Listener装载和启动Spring框架 -->
+ <listener>
+  <listener-class>org.springframework.web.context.ContextLoaderListener</listener-class>
+ </listener>
+
+ <!-- Spring 刷新Introspector防止内存泄露 -->
+ <listener>
+  <listener-class>org.springframework.web.util.IntrospectorCleanupListener</listener-class>
+ </listener>
+ 
+ 
+
+ 
+ <!-- 配置Spring MVC ，这是SpringMVC的主控程序-->
+ <servlet>
+  <servlet-name>action</servlet-name>
+  <servlet-class>org.springframework.web.servlet.DispatcherServlet</servlet-class>
+  <load-on-startup>1</load-on-startup>
+ </servlet>
+
+ <servlet-mapping>
+  <servlet-name>action</servlet-name>
+  <url-pattern>/</url-pattern>
+ </servlet-mapping>
+ 
+
+ 
+
+ <!--  session超时定义,单位为分钟 -->
+ <session-config>
+  <session-timeout>-1</session-timeout>
+ </session-config>
+ <welcome-file-list>
+  <welcome-file>/index.jsp</welcome-file>
+ </welcome-file-list>
+ <!-- 出错处理页 -->
+ <error-page>
+  <error-code>500</error-code>
+  <location>/common/500.jsp</location>
+ </error-page>
+ <error-page>
+  <error-code>404</error-code>
+  <location>/common/404.jsp</location>
+ </error-page>
+ <error-page>
+  <error-code>403</error-code>
+  <location>/common/403.jsp</location>
+ </error-page>
+ 
+ 
+ 
+ 
+ 
+</web-app>

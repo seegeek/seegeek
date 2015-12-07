@@ -1,0 +1,161 @@
+/*清零*/
+*{ margin:0px; padding:0px; border:none}
+#container a{ color:#000; text-decoration:none; font-family:"Trebuchet MS", Arial, Helvetica, sans-serif;}
+/*头部底部*/
+#container{ font-family:"Trebuchet MS", Arial, Helvetica, sans-serif}
+
+.top{ width:100%;
+	  height:96px;
+	  background-color:#FFF;
+	  border-bottom:solid 1px #CCCCCC;
+	  position:fixed;
+	  top:0;
+	  z-index:5;
+	  font-size:50px; 
+	 }
+	 
+.top .top_left{ float:left;
+	 			width:15%;
+				line-height:106px;
+	 			height:96px; 
+	 			padding-left:5%;
+	 		   }
+			   
+.top .top_center{ float:left;
+				  width:70%;
+				  height:96px;
+				  line-height:96px;
+				  text-align:center;
+	              color:#383838;
+	             }
+				 
+.top .top_right{ float:left;  
+			 	 width:15%;
+	 			 height:96px;
+	 			 line-height:96px;
+				 text-align:center;
+	 			}
+
+#container .top .top_right input{ border:none;
+								  height:76px;
+								  line-height:96px;
+								  width:80%;
+								  font-size:30px;
+								  text-align:center;
+								  cursor:pointer;
+								 }
+
+.footer{ width:100%;
+   		 height:96px;
+		 line-height:96px;
+   		 position:fixed;
+   		 bottom:0px;
+   		 z-index:5;
+   		 font-size:50px;
+   		 border-top:solid 1px #CCCCCC;
+		 background:#900;
+   		}
+		
+.footer .f_left,.footer .f_center,.footer .f_right{ float:left;
+				 								    width:33%;
+				 								    text-align:center;
+												    }
+
+
+
+
+/*个人设置中部*/
+
+#main{ height:1000px; width:100%; padding-top:96px;}
+
+#main .main_head{ height:160px;
+				  width:100%;
+				  background:#FFF;
+				  border-bottom:solid 1px #CCCCCC;
+				 }
+
+#main .main_left{ height:160px;
+				  line-height:160px;
+				  float:left;
+				  width:50%;
+				  text-align:left;
+				  font-size:24px;
+				  padding-left:5%;
+				  color:#333;
+				  clear:both;
+				 }
+
+#main .main_right{ height:160px;
+				   line-height:160px;
+				   float:left;
+				   width:50%;
+				   text-align:right;
+				   font-size:24px;
+				   padding-right:5%;
+				   color:#333;				  }
+
+#main .main_name{ height:70px;
+				  background:#FFF;
+				  border-bottom:solid 1px #CCCCCC;
+				  width:100%;
+				 }
+
+#main #main_hr{ border:none;}
+
+#main .main_name .main_name_left{ height:68px;
+								  line-height:68px;
+								  width:50%;
+								  float:left;
+								  font-size:24px;
+								  text-align:left;
+								  padding-left:5%;
+								  color:#333;
+								  clear:both;
+								 }
+
+#main_enpty{ height:40px; background:#ededed;}
+
+#main .main_name .main_name_right{ height:68px;
+								   line-height:68px;
+								   width:50%;
+								   float:left;
+								   font-size:24px;
+								   text-align:right;
+								   padding-right:5%;
+								   color:#333;
+								  }
+
+
+/*昵称 账号 密码设置 性别 个性签名 兴趣爱好*/
+#container #body{ padding-top:116px;
+				  background:#FF3;
+				  background:#ededed;
+				  height:1000px;
+				 }
+				 
+#container #body input{ height:70px;
+				        font-size:24px;
+					   }
+
+/*家庭住址 工作地址*/
+
+
+#main_center1{ height:90px;
+			   background:#FFF;
+			   width:100%;
+			   font-size:24px;
+			  }
+					
+select{ width:50%;
+		height:70px;
+	   }
+
+
+
+
+
+
+
+
+
+

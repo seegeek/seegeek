@@ -1,6 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE configuration PUBLIC "-//mybatis.org//DTD Config 3.0//EN" "http://mybatis.org/dtd/mybatis-3-config.dtd">
-
 <configuration>
 	<!-- 用来加载配置文件中使用的java对象 -->
 	<settings>
@@ -8,14 +7,34 @@
 		<setting name="lazyLoadingEnabled" value="true"/>
 	</settings>
 	<typeAliases>
+		<typeAlias alias="resourceVo" type="com.seegeek.cms.domain.Resource"/>
 		<typeAlias alias="userVo" type="com.seegeek.cms.domain.User"/>
+		<typeAlias alias="roleVo" type="com.seegeek.cms.domain.Role"/>
+		<typeAlias alias="departmentVo" type="com.seegeek.cms.domain.Department"/>
+		<typeAlias alias="opUserVo" type="com.seegeek.cms.domain.OPUser"/>
 		<typeAlias alias="livemediaVo" type="com.seegeek.cms.domain.LiveMedia"/>
+		<typeAlias alias="commentVo" type="com.seegeek.cms.domain.Comment"/>
+		<typeAlias alias="watchVo" type="com.seegeek.cms.domain.Watch"/>
+		<typeAlias alias="userLocationVo" type="com.seegeek.cms.domain.UserLocation"/>
+		<typeAlias alias="roleResourceVo" type="com.seegeek.cms.domain.RoleResource"/>
+		<typeAlias alias="userRoleVo" type="com.seegeek.cms.domain.UserRole"/>
+		<typeAlias alias="videoVo" type="com.seegeek.cms.domain.Video"/>
 	</typeAliases>
 	
 	<!-- 用来加载配置ORM 映射文件 -->
 	<mappers>
 		<!-- 用户操作 -->
+	    <mapper resource="com/seegeek/cms/domain/mapper/Resource.xml"/>
 	    <mapper resource="com/seegeek/cms/domain/mapper/User.xml"/>
+	    <mapper resource="com/seegeek/cms/domain/mapper/Role.xml"/>
+	    <mapper resource="com/seegeek/cms/domain/mapper/Department.xml"/>
+	    <mapper resource="com/seegeek/cms/domain/mapper/OPUser.xml"/>
 	    <mapper resource="com/seegeek/cms/domain/mapper/LiveMedia.xml"/>
+	    <mapper resource="com/seegeek/cms/domain/mapper/Comment.xml"/>
+	    <mapper resource="com/seegeek/cms/domain/mapper/Watch.xml"/>
+	    <mapper resource="com/seegeek/cms/domain/mapper/UserLocation.xml"/>
+	    <mapper resource="com/seegeek/cms/domain/mapper/RoleResource.xml"/>
+	    <mapper resource="com/seegeek/cms/domain/mapper/UserRole.xml"/>
+	    <mapper resource="com/seegeek/cms/domain/mapper/Video.xml"/>
 	</mappers>
 </configuration>

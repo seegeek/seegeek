@@ -1,0 +1,39 @@
+<!doctype html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>page a</title>
+    <script>
+     
+        var params = function(args){
+         
+            var p = [];
+ 
+            for(var n in args)
+                p.push( n + '=' + args[n]);
+ 
+            return encodeURI('?' + p.join('&'));
+         
+        };
+         
+        window.onload = function(){
+         
+            document.getElementById('send').onclick = function(){
+             
+                var data = {    
+                 
+                    name:'参数1',
+                    value:'1'
+                };
+                 
+                //向b页面传递参数 name,value
+                location.href = 'b.html' + params(data);
+            };
+        };
+     
+    </script>
+</head>
+<body>
+    <button id="send">send</button>
+</body>
+</html>

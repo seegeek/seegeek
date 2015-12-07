@@ -12,6 +12,6 @@ import com.seegeek.cms.domain.Comment;
  * 类说明
  */
 @Repository
-public class CommentDaoImpl extends BaseDaoImpl<Comment> implements ICommentDao{
+public class CommentDaoImpl extends BaseDaoImpl<Comment> implements ICommentDao{ 
 
 }

@@ -12,8 +12,16 @@ import org.springframework.web.context.ServletContextAware;
 import org.springframework.web.context.WebApplicationContext;
 import org.springframework.web.servlet.support.RequestContextUtils;
 
+import com.seegeek.cms.domain.OPUser;
 import com.seegeek.cms.domain.User;
+import com.seegeek.cms.service.ICommentService;
+import com.seegeek.cms.service.IDepartmentService;
 import com.seegeek.cms.service.ILiveMediaService;
+import com.seegeek.cms.service.IOPUserService;
+import com.seegeek.cms.service.IResourceService;
+import com.seegeek.cms.service.IRoleResourceService;
+import com.seegeek.cms.service.IRoleService;
+import com.seegeek.cms.service.IUserRoleService;
 import com.seegeek.cms.service.IUserService;
 
 @Component
@@ -21,13 +29,22 @@ public class BaseAction implements  ServletContextAware {
 
 	@Autowired
 	public IUserService userService;
-	
-
+	@Autowired
+	public IResourceService resourceService;
+	@Autowired
+	public IRoleService roleService;
+	@Autowired
+	public IRoleResourceService roleResourceService;
+	@Autowired
+	public IUserRoleService userRoleService;
+	@Autowired
+	public IDepartmentService departmentService;
 	@Autowired
 	public ILiveMediaService liveMediaService;
+	@Autowired
+	public ICommentService commentService;
 	protected static Logger logger =null ;
 	protected static String className =null ;
-	
 	private WebApplicationContext applicationContext;
 	
 	public BaseAction() {
@@ -61,6 +78,7 @@ public class BaseAction implements  ServletContextAware {
 	public User getLoginUserBySesson(HttpServletRequest request){
 		return (User) request.getSession().getAttribute("user");
 	}
+	
 
 	public void setServletContext(ServletContext servletContext) {
 //		applicationContext = WebApplicationContextUtils.getRequiredWebApplicationContext(servletContext);

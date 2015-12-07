@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+	"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.seegeek.cms.domain.RoleResource">
+	<!-- 主机实体对象与数据库字段的映射 -->
+	<resultMap type="roleResourceVo" id="roleResourceMap">
+		<result column="roleId" property="roleId"/>
+		<result column="resourceId" property="resourceId"/>
+	</resultMap>
+	<select id="getAll" parameterType="roleResourceVo" resultType="com.seegeek.cms.domain.RoleResource">
+		select *  from role_resource 
+			WHERE 1=1
+		<trim>
+			<if test="roleId!=''"> and roleId = #{roleId}</if>
+		</trim>
+	</select>
+	<insert id="addRoleResouces" parameterType="java.util.List">
+    INSERT INTO role_resource (roleId, resourceId)
+    <foreach collection="list" item="item" index="index" separator=" UNION ALL ">  
+    SELECT #{item.roleId}, #{item.resourceId} FROM DUAL
+    </foreach>  
+	</insert>
+	<!--按roleId 删除  -->	
+	<delete id="deleteByRoleId" parameterType="int">
+		delete from role_resource where roleId = #{roleId}
+	</delete>
+	
+</mapper>

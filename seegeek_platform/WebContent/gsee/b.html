@@ -1,0 +1,34 @@
+<!doctype html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>page a</title>
+    <script>     
+        var args = function(params){
+             
+            var a = {};
+             
+            params = params || location.search;
+             
+            if(!params) return {};
+             
+            params = decodeURI(params);
+             
+            params.replace(/(?:^\?|&)([^=&]+)(?:\=)([^=&]+)(?=&|$)/g,function(m,k,v){  a[k] = v; });
+             
+            return a;
+             
+        };
+         
+        window.onload = function(){
+                 
+                var argsFromPageA = args();
+                // 打印a页面传递来的参数
+            console.log(argsFromPageA);
+        };
+     
+    </script>
+</head>
+<body>
+</body>
+</html>

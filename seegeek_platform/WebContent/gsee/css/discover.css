@@ -1,0 +1,179 @@
+@charset "utf-8";
+/* CSS Document */
+
+/* common header*/
+
+/*中间部分设置*/
+.row{height:auto; 
+	 margin-top:96px;
+	 z-index:1;
+	 }
+.conter{
+	width:100%; 
+	 height:380px;
+	 margin:5px 0;
+	 position:relative;
+	 }
+.conter .conter_bg{
+	width:100%;
+	height:380px;
+	position:relative;
+	}
+.conter .conter_bg img{
+	width:100%;
+	height:380px;
+	}/*图片大小的设定*/
+.conter_top{
+	width:100%;
+	height:60px;
+	padding-top:10px;
+	padding-left:5%;
+	position:absolute; 
+	top:12px;
+	left:0px; 
+	}
+.conter_top .pic{
+	float:left;
+	width:6%;
+	color:#fff;
+	font-size:24px;
+	text-align:left;
+	}
+.conter_top .text{
+	float:left;
+	width:12%; 
+	text-align:left;
+	color:#fff;
+	font-size:24px;
+	}
+.conter_title{width:100%;
+			height:33px; 
+			line-height:33px;
+			/*margin-top:200px;*/
+			padding:4px 0 2px 5%;
+			font-size:28px;
+			color:#fff;
+			position:absolute;
+			bottom:130px;
+			left:0px;
+			display:inline-block;
+			white-space:nowrap;/*强制一行显示*/
+			overflow:hidden;
+			-o-text-overflow:ellipsis;
+			text-overflow:ellipsis;
+			-moz-text-overflow:url('ellipsis.xml#ellipsis');
+			 }
+.conter_tag{width:100%;
+			height:26px;
+			line-height:26px;
+			font-size:24px;
+			color:#fff;
+			padding:0 0 0 5%;
+			position:absolute;
+			position:absolute;
+			bottom:102px;
+			left:0px;
+			display:inline-block;
+			white-space:nowrap;/*强制一行显示*/
+			overflow:hidden;
+			-o-text-overflow:ellipsis;
+			text-overflow:ellipsis;
+			-moz-text-overflow:url('ellipsis.xml#ellipsis');
+			}
+
+.conter_bottom{ width:100%;
+				height:100px;
+				background:#000;
+				color:#fff;
+				opacity:0.5;
+				position:absolute;
+				bottom:0;}
+				
+.conter_div{
+			width:100%;
+			height:100px;
+			color:#fff;
+			position:absolute;
+			left:0;
+			bottom:0;
+			
+			}
+.conter_div .left{
+				  float:left;
+				  width:50%;
+				  height:96px;
+				  padding-left:5%;
+				  }
+.conter_div .left table{
+	width:100%; 
+	height:90px;  
+	}
+/*圆形头像设置*/
+.conter_div .left table tr:nth-child(1) td:nth-child(1){
+	width:20%;
+	height:90px; 
+	}
+.conter_div .left table tr:nth-child(1) td:nth-child(1) .box{
+	width:80px;
+	height:80px;
+	-moz-border-radius: 40px;      /* Gecko browsers */
+    -webkit-border-radius: 40px;   /* Webkit browsers */
+    border-radius:40px;  /* W3C syntax */
+	overflow:hidden;
+	}
+.conter_div .left table tr:nth-child(1) td:nth-child(1) .box img{
+	width:100%;
+	}
+/*昵称像设置*/
+.conter_div .left table tr:nth-child(1) td:nth-child(2){
+	width:80%;
+	height:50px;
+	font-size:26px; 
+	color:#fff;
+	font-weight:bold;
+	padding:10px 0 0 1%; 
+	}
+/*位置设置*/
+.conter_div .left table tr:nth-child(2) td:nth-child(1){
+	 width:80%;
+	 height:35px; 
+	 padding:3px 0 0 1%;
+	 color:#fff;
+	 font-size:24px; 
+			
+	 }
+
+.conter_div .right{
+	float:left;
+	width:50%;
+	height:100px; 
+	line-height:105px;
+	}
+
+.conter_div .right .right_1{
+	float:left;
+	width:32%;
+	height:100px; 
+	}
+.conter_div .right .right_1 .pic{
+	float:left;
+	width:50%;
+	height:100px;
+	text-align:right;
+	padding-top:17px;
+	font-size:26px; 
+	}
+.conter_div .right .right_1 .text{
+	float:left;
+	width:50%;
+	height:100px; 
+	text-align:left;
+	font-size:24px;
+	color:#fff;
+	padding-top:15px;
+	padding-left:2%;
+	
+	}
+
+
+/* common footer*/

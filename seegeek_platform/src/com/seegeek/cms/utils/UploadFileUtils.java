@@ -41,6 +41,7 @@ public class UploadFileUtils {
 	public static String saveUploadFile(HttpServletRequest request, FileItemStream formFile) {
 		// 1，获取路径
 		
+//		String basePath ="d:/content/";// 返回值最后没有'/'
 		String basePath =Param.upload_filepath; // 返回值最后没有'/'
 		String path="";
 		String subPath="/"+sdf.format(new Date());

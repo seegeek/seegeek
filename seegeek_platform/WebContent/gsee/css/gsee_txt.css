@@ -1,0 +1,24 @@
+﻿/*清零*/
+*{ margin:0px; padding:0px;}
+/*清零*/
+#container{ font-family:"Trebuchet MS", Arial, Helvetica, sans-serif}
+
+#main{ width:100%; height:1300px; background:#dedede}
+
+		   
+#main_center{ padding-top:120px;
+			  width:100%;
+			  height:70px;
+			  border:none
+		   	 }
+			 
+#main_center input{ border:none
+					background:#FFF
+				   }
+
+#main div .Txt{ width:100%;
+			    height:80px;
+				border:none;
+				background:#FFF;
+				font-size:28px;
+			   }

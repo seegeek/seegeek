@@ -9,56 +9,53 @@ package com.seegeek.cms.domain;
  */
 public class Role {
 
-	private String id;
+		/**
+		 * 组织也分为上下级的关系
+		 * 如果用户为admin可以创建一级菜单
+		 * 如果为非admin 用户就无法创建菜单
+		 */
+	private Integer id;
 
-	private String loginName;
+	private String name;
 
-	private String mobilePhone;
-
-	private String email;
+	private String description;
 	
-	
-	private String IMEI;
+	//默认不选中
+	private boolean checked=false;
 
-	public String getId() {
+
+	public Integer getId() {
 		return id;
 	}
 
-	public void setId(String id) {
+	public void setId(Integer id) {
 		this.id = id;
 	}
 
-	public String getLoginName() {
-		return loginName;
+	public String getName() {
+		return name;
 	}
 
-	public void setLoginName(String loginName) {
-		this.loginName = loginName;
+	public void setName(String name) {
+		this.name = name;
 	}
 
-	public String getMobilePhone() {
-		return mobilePhone;
+	public String getDescription() {
+		return description;
 	}
 
-	public void setMobilePhone(String mobilePhone) {
-		this.mobilePhone = mobilePhone;
+	public void setDescription(String description) {
+		this.description = description;
 	}
 
-	public String getEmail() {
-		return email;
+	public boolean isChecked() {
+		return checked;
 	}
 
-	public void setEmail(String email) {
-		this.email = email;
+	public void setChecked(boolean checked) {
+		this.checked = checked;
 	}
 
-	public String getIMEI() {
-		return IMEI;
-	}
-
-	public void setIMEI(String imei) {
-		IMEI = imei;
-	}
 	
 	
 	

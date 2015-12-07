@@ -1,0 +1,10 @@
+function record()
+
+{
+
+alert("record....");
+
+
+
+
+}

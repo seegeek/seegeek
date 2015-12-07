@@ -1,0 +1,65 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+	"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.seegeek.cms.domain.Resource">
+	<!-- 主机实体对象与数据库字段的映射 -->
+	<resultMap type="resourceVo" id="resourceMap">
+		<id property="id" column="id"/>  
+		<result column="name" property="name"/>
+		<result column="url" property="url"/>
+		<result column="tag" property="tag"/>
+		<result column="icon" property="icon"/>
+		<result column="type" property="type"/>
+	  <!-- 查询父模块 -->  
+       <association property="parent" column="parentId" select="getModulesById" />  
+        <!-- 查询子模块 -->  
+        <collection property="children" column="id" select="getChildren" />  
+	</resultMap>
+	<!-- 查询所有信息资源信息"-->
+	<select id="getAll" parameterType="resourceVo" resultMap="resourceMap">
+		select *  from resource 
+			WHERE 1=1
+		<trim>
+			<if test="name!=null and  name!=''"> and name like "%"#{name}"%"</if>
+			<if test="startRow!=null">LIMIT #{startRow},#{pageSize}</if>
+		</trim>
+	</select>
+	<select id="totalNum"  resultType="int">
+		select count(id)  from resource where 1=1
+			<trim>
+			<if test="name!=null and name!=''"> and name like "%"#{name}"%"</if>
+			</trim>
+	</select>
+	<select id="get_parent_null" parameterType="resourceVo"  resultMap="resourceMap">
+		select *  from resource where parentId is null
+	</select>
+	
+	
+	 <select id="getModulesById" parameterType="int" resultMap="resourceMap">  
+        select * from resource where id = #{id}  
+    </select> 
+	
+	<!-- 查询子模块集合 -->
+	<select id="getChildren"  parameterType="int" resultMap="resourceMap">
+		select *  from resource where parentId =#{id}
+	</select>
+	
+	<select id="get_string_list"   resultType="String">
+		select tag  from resource;
+	</select>
+	
+	<select id="getListByIds" parameterType="resourceVo"  resultMap="resourceMap">
+     select *
+        from resource as re,role as ro,role_resource as member 
+        where  ro.id=member.roleId  and re.id=member.resourceId  and member.roleId in
+        <foreach collection="list" item="id" index="index"
+            open="(" close=")" separator=",">
+            #{id}
+        </foreach>
+    </select>
+	
+	<insert id="addObject" parameterType="resourceVo" useGeneratedKeys="true" keyProperty="id">
+		insert into resource(name,url,tag,icon,type,parentId,date_time)
+		values (#{name},#{url},#{tag},#{icon},#{type},#{parentId},now())
+	</insert>
+</mapper>

@@ -31,10 +31,16 @@ public class LoginFilter implements Filter {
 		priList.add("getCommentNum");
 		priList.add("getPraiseNum");
 		priList.add("getCollectNum");
+		priList.add("saw");
+		priList.add("getSawNum");
 		priList.add("deleteItem");
 		priList.add("getItemSource");
 		priList.add("getItem");
 		priList.add("getSearchList");
+		priList.add("online");
+		priList.add("active_email");
+		priList.add("uploadVideo");
+		priList.add("test");
 //		
 //		comment -- 评论动作
 //		praise -- 点赞动作
@@ -51,17 +57,11 @@ public class LoginFilter implements Filter {
 		HttpSession session = req.getSession();
 		User user = (User) session.getAttribute("user");
 		String url = req.getRequestURI();
-		
-		logger.info("url----" + url+"---"+req.getRequestURL());
-
 			if (url.indexOf("rest") > -1) {
 
 			if (user != null) {// 登录后才能访问
-				logger.info("用户已登录");
 				chain.doFilter(request, response);
 			} else {
-				System.out.println(priList.contains(url)+"==============");
-				System.out.println(priList.indexOf(url));
 				if(hasPrivellge(url,priList))
 				{
 					chain.doFilter(request, response);
@@ -84,12 +84,10 @@ public class LoginFilter implements Filter {
 		{
 			 if(url.indexOf(str)>-1)
 			 {
-				 logger.info("已被授权!!!");
 				 return true;
 			 }
 			
 		}
-		logger.info("未被授权!!!");
 		
 	return false;	
 	}

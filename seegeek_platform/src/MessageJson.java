@@ -1,6 +1,8 @@
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.UUID;
+
 import net.sf.json.JSONObject;
 
 /**
@@ -155,6 +157,6 @@ public class MessageJson {
 	public static void main(String args[])
 	{
 		
-		
+		System.out.println(UUID.randomUUID().toString().length());
 	}
 }

@@ -48,7 +48,7 @@ public class QRCodeDecoderHandlerUtil {
 			file.mkdir();
 		}
 		//图片
-		String icon=UUID.randomUUID().toString()+".png";
+		String icon=UUID.randomUUID().toString()+".jpeg";
 		try {
 			in = input;
 			out = new FileOutputStream(file.getPath()+"/"+icon);

@@ -1,6 +1,7 @@
 package com.seegeek.cms.service.impl;
 
 import java.io.Serializable;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -9,6 +10,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import com.seegeek.cms.dao.IBaseDao;
 import com.seegeek.cms.service.IBaseService;
 import com.seegeek.cms.utils.GeneriacUtils;
+import com.seegeek.cms.utils.PageBean;
 
 /**
  * @author  作者 zhaogaofei
@@ -24,6 +26,9 @@ public abstract class BaseServiceImpl<T,E extends IBaseDao<T>> implements IBaseS
 	public void add(String mybatisId, T entity) {
 		genericDao.insert(mybatisId, entity);
 	}
+	public void add(String mybatisId, List<T> entity) {
+		genericDao.insert(mybatisId, entity);
+	}
 	public void delete(String mybatisId, Serializable id) {
 		genericDao.delete(mybatisId, id);
 	}
@@ -34,7 +39,9 @@ public abstract class BaseServiceImpl<T,E extends IBaseDao<T>> implements IBaseS
 		return genericDao.queryOne(mybatisId, entity);
 	}
 	public List<T> getAll(String mybatisId) {
-	return 	genericDao.query(mybatisId,"");
+	Map<String, String> map =new HashMap<String, String>();
+	map.put("startRow", null);
+	return 	genericDao.query(mybatisId,map);
 	}
 	public void update(String mybatisId, T entity) {
 		genericDao.update(mybatisId, entity);
@@ -63,6 +70,12 @@ public abstract class BaseServiceImpl<T,E extends IBaseDao<T>> implements IBaseS
 	public int queryCount(String id, Map<String, Object> _params) {
 		// TODO Auto-generated method stub
 		return 	genericDao.queryCount(id, _params);
+	}
+	public List<T> getList(String mybatisId, List<String> list) {
+		return 	genericDao.query(mybatisId,list);
+	}
+	public PageBean queryPage(String id, Map<String, Object> map) {
+		return 	genericDao.queryPage(id, map);
 	}
 
 

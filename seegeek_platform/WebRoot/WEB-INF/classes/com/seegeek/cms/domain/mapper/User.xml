@@ -9,21 +9,196 @@
 		<result column="email" property="email"/>
 		<result column="IMEI" property="IMEI"/>
 		<result column="location_x" property="location_x"/>
+		<result column="cid" property="cid"/>
+		<result column="icon" property="icon"/>
 		<result column="location_y" property="location_y"/>
 		<result column="nickname" property="nickname"/>
 		<result column="personal_signature" property="personal_signature"/>
 		<result column="home_address" property="home_address"/>
 		<result column="work_address" property="work_address"/>
 		<result column="sex" property="sex"/>
-	</resultMap>
+		<result column="token" property="token"/>
+		<result column="bind_time" property="bind_time"/>
+		<result column="active_status" property="active_status"/>
+		<result column="uuid" property="uuid"/>
+		<result column="message_code" property="message_code"/>
+		<result column="departmentId" property="departmentId"/>
+    	<association property="department" column="departmentId" 
+			select="getDepartmentById" />
+		<collection property="roleList" resultMap="roleResult" />
+		</resultMap>
+	
+	   <resultMap type="userVo" id="userRoleMap" extends="userMap">  
+        <collection property="roleList" ofType="com.seegeek.cms.domain.Role">  
+            <id property="id" column="roleId" />  
+            <result property="name" column="name" />  
+            <result property="description" column="description" />  
+        </collection>  
+    	</resultMap>  
+    
+    <resultMap 	type="com.seegeek.cms.domain.Department" id="departmentMap">  
+    <id property="id" column="id" />  
+    <result property="name" column="name" />  
+	</resultMap>  
+			
+	<select id="getDepartmentById" resultMap="departmentMap">
+		select * from department where id =
+		#{id}
+	</select>
+			
+    
+    <select id="selectUserRole" parameterType="int"  
+        resultMap="userRoleMap">  
+         select u.id,u.username,u.passwd, ri.id as  
+        roleId,ur.userId,ri.name as roleName from op_user u left join user_role ur on u.id=ur.userId  
+        left join role ri on ur.roleId=ri.id  where ur.userId=#{id}
+    </select>  
+  
+	
+	
 	<!-- 查询所有用户信息"-->
 	<select id="getAll" parameterType="userVo" resultType="com.seegeek.cms.domain.User">
 		select *  from user 
+		where 1=1
+		<trim>
+			<if test="name!=null and  name!=''"> and nickname like "%"#{name}"%"</if>
+				order by id desc
+			<if test="startRow!=null"> LIMIT #{startRow},#{pageSize}</if>
+		</trim>
 	</select>
+	
+	<select id="totalNum"  resultType="int">
+		select count(id)  from user where 1=1
+			<trim>
+			<if test="name!=null and  name!=''"> and nickname like "%"#{name}"%"</if>
+			</trim>
+	</select>
+	
+	<select id="getUserBymobilePhone" parameterType="userVo" resultType="com.seegeek.cms.domain.User">
+		select * from user where mobilePhone = #{mobilePhone} 
+	</select>
+	<select id="getOne" parameterType="userVo" resultType="com.seegeek.cms.domain.User">
+		select * from user where id = #{id} 
+	</select>
+	<select id="checklogin" parameterType="userVo" resultType="com.seegeek.cms.domain.User">
+		select * from user where 1=1
+		<trim>
+		<if test="loginName !=null and loginName!=''">
+			and loginName=#{loginName} 
+		</if>
+		<if test="mobilePhone !=null and mobilePhone!=''">
+			and mobilePhone=#{mobilePhone} 
+		</if>
+		<if test="passwd!=null">
+			and passwd=#{passwd} 
+		</if>
+		<if test="IMEI!=null">
+		and IMEI=#{IMEI}
+		</if>
+		</trim>
+	</select>
+	<select id="checkEmail" parameterType="userVo" resultType="com.seegeek.cms.domain.User">
+		select * from user where active_status =1 and email = #{email} 
+		<trim>
+		<if test="passwd!=null">
+			and passwd=#{passwd} 
+		</if>
+		<if test="IMEI!=null">
+		and IMEI=#{IMEI}
+		</if>
+		</trim>
+	</select>
+
 	<!-- 插入数据 -->
-		<insert id="addObject" parameterType="userVo">
-		insert into user(id,loginName,mobilePhone,email,IMEI,location_x,location_y,state,data_time)
-		values (#{id},#{loginName},#{mobilePhone},#{email},#{IMEI},#{location_x},#{location_y},#{state},now())
+	<insert id="addObject" parameterType="userVo">
+		insert into user(id,nickname,icon,loginName,passwd,mobilePhone,email,IMEI,location_x,location_y,state,data_time,departmentId)
+		values (#{id},#{nickname},#{icon},#{loginName},#{passwd},#{mobilePhone},#{email},#{IMEI},#{location_x},#{location_y},#{state},now(),#{departmentId})
+	</insert>
+	<!--insert into  device data  -->
+	<insert id="addDeviceObject" parameterType="Map">
+		insert into device(language,device_os,device_os_version,idfa,device_token,device_name,cpu,device_unicode,reg_time,userId)
+		values (#{language},#{device_os},#{device_os_version},#{idfa},#{device_token},#{device_name},#{cpu},#{device_unicode},now(),#{userId})
+	</insert>
+	<!--更新实体信息  -->
+	<update id="updateObject" parameterType="userVo">
+		update user  set nickname=#{nickname},mobilePhone=#{mobilePhone},
+		passwd=#{passwd},
+		loginName=#{loginName},
+		personal_signature=#{personal_signature},
+		email=#{email},
+		home_address=#{home_address},
+		work_address=#{work_address},
+		IMEI=#{IMEI},
+		sex=#{sex},
+		icon=#{icon},
+		token=#{token},
+		bind_time=#{bind_time},
+		active_status=#{active_status},
+		message_code=#{message_code},
+		departmentId=#{departmentId},
+		cid=#{cid}
+		where id=#{id}
+	</update>
+		
+	<!--用户粉丝关联表  -->
+	<select id="getUserFansCount"  parameterType="map"  resultType="int">
+		select count(fansId) from user_fans where  userId=#{userId} and fansId=#{fansId}
+	</select>
+	<!--用户关注关联表  -->
+	<select id="getUserCareCount"  parameterType="map"  resultType="int">
+		select count(id) from user_fans where  userId=#{userId} 
+	</select>
+
+	
+		<select id="getFansCount"  parameterType="map"  resultType="int">
+		select count(id) from user_fans where  fansId=#{fansId}
+	</select>
+	 <select id="getUserFans"  parameterType="map"  resultType="String">
+		select fansId from user_fans where  userId=#{userId} 
+	</select>
+	 <select id="getUserCare"  parameterType="map"  resultType="String">
+		select userId from user_fans where  fansId=#{fansId} 
+	</select>
+	<insert id="addUserFans" parameterType="map">
+		insert into user_fans(userId,fansId)
+		values (#{userId},#{fansId})
 	</insert>
 	
+	<select id="getUsersList" resultType="userVo">
+        select *
+        from user u
+        where u.id in
+        <foreach collection="list" item="id" index="index"
+            open="(" close=")" separator=",">
+            #{id}
+        </foreach>
+    </select>
+	<select id="getListByMobilePhoneList" resultType="userVo">
+        select *
+        from user u
+        where u.mobilePhone in
+        <foreach collection="list" item="mobilePhone" index="index"
+            open="(" close=")" separator=",">
+            #{mobilePhone}
+        </foreach>
+    </select>
+	<delete id="deleteObject" parameterType="int">
+		delete from user where id = #{id}
+	</delete>
+	
+	
+	
+	
+	
+<insert id="addUserBatch" useGeneratedKeys="true" parameterType="java.util.List">  
+    <selectKey resultType="long" keyProperty="id" order="AFTER">  
+        SELECT  
+        LAST_INSERT_ID()  
+    </selectKey>  
+    insert into t_train_record (add_time,emp_id,activity_id,flag)   
+    values  
+    <foreach collection="list" item="item" index="index" separator="," >  
+        (#{item.addTime},#{item.empId},#{item.activityId},#{item.flag})  
+    </foreach>  
+</insert>  
 </mapper>
