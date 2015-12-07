@@ -1,5 +1,8 @@
 package com.seegeek.cms.service.impl;
 
+import java.util.List;
+import java.util.Map;
+
 import org.springframework.stereotype.Service;
 
 import com.seegeek.cms.dao.ILiveMediaDao;
@@ -15,5 +18,14 @@ import com.seegeek.cms.service.ILiveMediaService;
  */
 @Service
 public class LiveMediaServiceImpl extends BaseServiceImpl<LiveMedia, ILiveMediaDao> implements ILiveMediaService{
+
+
+	public List<LiveMedia> getListByUserId(String mybatis, Map<String, Object> map) {
+		return genericDao.query(mybatis, map);
+	}
+	public int getListByUserIdLiveMediaId(String mybatis,
+			Map<String, Object> map) {
+		return genericDao.queryCount(mybatis, map);
+	}
 
 }

@@ -2,6 +2,7 @@ package com.seegeek.cms.service.impl;
 
 import java.io.Serializable;
 import java.util.List;
+import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
 
@@ -29,18 +30,39 @@ public abstract class BaseServiceImpl<T,E extends IBaseDao<T>> implements IBaseS
 	public T get(String mybatisId, Serializable id) {
 		return genericDao.queryOne(mybatisId, id);
 	}
+	public T get(String mybatisId,   T entity) {
+		return genericDao.queryOne(mybatisId, entity);
+	}
 	public List<T> getAll(String mybatisId) {
-	return 	genericDao.query(mybatisId, "");
+	return 	genericDao.query(mybatisId,"");
 	}
 	public void update(String mybatisId, T entity) {
-		
+		genericDao.update(mybatisId, entity);
 	}
+	
+	public List<T> getList(String mybatisId, Object param) {
+		return 	genericDao.query(mybatisId,param);
+	}
+	
+	
+	public List<T> getList(String mybatisId, Map<String, String> param) {
+		return 	genericDao.query(mybatisId,param);
+	}
+	
+	
 	public E getGenericDao() {
 		return genericDao;
 	}
 	@Autowired
 	public void setGenericDao(E genericDao) {
 		this.genericDao = genericDao;
+	}
+	public void add(String mybatisId, Map<String, Object> map) {
+		 	genericDao.insert(mybatisId, map);
+	}
+	public int queryCount(String id, Map<String, Object> _params) {
+		// TODO Auto-generated method stub
+		return 	genericDao.queryCount(id, _params);
 	}
 
 

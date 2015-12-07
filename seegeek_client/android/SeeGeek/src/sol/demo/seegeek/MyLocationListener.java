@@ -1,5 +1,6 @@
 package sol.demo.seegeek;
 
+import android.os.Message;
 import android.util.Log;
 
 import com.baidu.location.BDLocation;
@@ -9,11 +10,14 @@ import com.baidu.location.BDLocationListener;
  * 实现实位回调监听
  */
 public class MyLocationListener implements BDLocationListener {
-
 	@Override
 	public void onReceiveLocation(BDLocation location) {
 		Log.i(MainActivity.TAG, "onReceiveLocation");
 		AndJs.updateLocation(location);
+		MainActivity.setLocation(location);
+		Message message = new Message();
+		message.what = MainActivity.MSG_UPLOCATION;
+		MainActivity.getHandler().sendMessage(message);
 		// Receive Location
 		StringBuffer sb = new StringBuffer(256);
 		sb.append("time : ");
@@ -42,6 +46,6 @@ public class MyLocationListener implements BDLocationListener {
 			sb.append("\noperationers : ");
 			sb.append(location.getOperators());
 		}
-//		Log.i("BaiduLocationApiDem", sb.toString());
+//		Log.i(MainActivity.TAG, sb.toString());
 	}
 }

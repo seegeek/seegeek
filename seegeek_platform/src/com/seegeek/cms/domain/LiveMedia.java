@@ -62,6 +62,8 @@ public class LiveMedia {
 	 * 正看用户名
 	 */
 	private String seening_username;
+	
+	
 	/**
 	 * 举报数量
 	 */
@@ -76,6 +78,12 @@ public class LiveMedia {
 	 * 获赞数量
 	 */
 	private Integer get_praise_num;
+	
+	/**
+	 * 收藏量 临时添加
+	 */
+	
+	private Integer get_collect_num;
 	/**
 	 * 获喜欢数量
 	 */
@@ -88,7 +96,18 @@ public class LiveMedia {
 	 * 已举报人数
 	 */
 	private Integer reported_num;
-
+	
+	private String roomId;
+	
+	private String icon;
+	//0是直播 1 是点播
+	private Integer play_type;
+	//
+	private String recordingId;
+	//
+	private String start_date;
+	
+	private User user;
 
 	public Integer getId() {
 		return id;
@@ -241,5 +260,67 @@ public class LiveMedia {
 	public void setReported_num(Integer reported_num) {
 		this.reported_num = reported_num;
 	}
+
+	public String getIcon() {
+		return icon;
+	}
+
+	public void setIcon(String icon) {
+		this.icon = icon;
+	}
+
+	public String getRoomId() {
+		return roomId;
+	}
+
+	public void setRoomId(String roomId) {
+		this.roomId = roomId;
+	}
+
+	public Integer getPlay_type() {
+		return play_type;
+	}
+
+	public void setPlay_type(Integer play_type) {
+		this.play_type = play_type;
+	}
+
+	public String getRecordingId() {
+		return recordingId;
+	}
+
+	public void setRecordingId(String recordingId) {
+		this.recordingId = recordingId;
+	}
+
+	public User getUser() {
+		return user;
+	}
+
+	public void setUser(User user) {
+		this.user = user;
+	}
+
+	public Integer getGet_collect_num() {
+		return get_collect_num;
+	}
+
+	public void setGet_collect_num(Integer get_collect_num) {
+		this.get_collect_num = get_collect_num;
+	}
+
+	public String getStart_date() {
+		return start_date;
+	}
+
+	public void setStart_date(String start_date) {
+		this.start_date = start_date;
+	}
+
+
+
+
+
+
 
 }

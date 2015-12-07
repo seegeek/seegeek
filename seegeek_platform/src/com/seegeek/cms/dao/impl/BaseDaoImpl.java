@@ -41,6 +41,9 @@ public abstract class BaseDaoImpl<T> implements IBaseDao<T> {
 	public <T> List<T> query(String _mybitsId, Map<String, Object> _params) {
 		return sqlSession.selectList(getDefaultSqlNamespace()+"."+_mybitsId, _params);
 	}
+	public int queryCount(String _mybitsId, Map<String, Object> _params) {
+		return sqlSession.selectOne(getDefaultSqlNamespace()+"."+_mybitsId, _params);
+	}
 
 	public <T> List<T> query(String _mybitsId, Object _params) {
 		return sqlSession.selectList(getDefaultSqlNamespace()+"."+_mybitsId, _params);
@@ -53,4 +56,9 @@ public abstract class BaseDaoImpl<T> implements IBaseDao<T> {
 	public void setSqlSession(SqlSessionTemplate sqlSession) {
 		this.sqlSession = sqlSession;
 	}
+
+	public <T> int insert(String id, Map<String, Object> map) {
+		return sqlSession.insert(getDefaultSqlNamespace()+"."+id, map);
+	}
+	
 }

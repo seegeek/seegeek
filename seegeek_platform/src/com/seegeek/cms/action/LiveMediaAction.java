@@ -13,6 +13,9 @@ import net.sf.json.JSONObject;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.ModelAndView;
 
 import com.seegeek.cms.domain.LiveMedia;
@@ -78,6 +81,12 @@ public class LiveMediaAction extends BaseAction {
 		List<LiveMedia> entityList = liveMediaService.getAll(Constance.GET_ALL);
 		request.setAttribute("entityList", entityList);
 		return "LiveMedia/index";
+	}
+	@RequestMapping(params = "method=clear")
+	public String clear(ModelMap map, HttpServletRequest request,
+			HttpServletResponse response) {
+		liveMediaService.delete(Constance.DELETE_ALL,"1");
+		return "redirect:/LiveMediaAction.do?method=list";
 	}
 
 }

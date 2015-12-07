@@ -20,10 +20,55 @@
 	<select id="getAll" parameterType="userVo" resultType="com.seegeek.cms.domain.User">
 		select *  from user 
 	</select>
+	<select id="getUserBymobilePhone" parameterType="userVo" resultType="com.seegeek.cms.domain.User">
+		select * from user where mobilePhone = #{mobilePhone} 
+	</select>
+	<select id="getOne" parameterType="userVo" resultType="com.seegeek.cms.domain.User">
+		select * from user where id = #{id} 
+	</select>
+	<select id="checklogin" parameterType="userVo" resultType="com.seegeek.cms.domain.User">
+		select * from user where mobilePhone = #{mobilePhone} 
+		<trim>
+		<if test="passwd!=null">
+			and passwd=#{passwd} 
+		</if>
+		<if test="IMEI!=null">
+		and IMEI=#{IMEI}
+		</if>
+		</trim>
+	</select>
+
 	<!-- 插入数据 -->
 		<insert id="addObject" parameterType="userVo">
-		insert into user(id,loginName,mobilePhone,email,IMEI,location_x,location_y,state,data_time)
-		values (#{id},#{loginName},#{mobilePhone},#{email},#{IMEI},#{location_x},#{location_y},#{state},now())
+		insert into user(id,nickname,loginName,passwd,mobilePhone,email,IMEI,location_x,location_y,state,data_time)
+		values (#{id},#{nickname},#{loginName},#{passwd},#{mobilePhone},#{email},#{IMEI},#{location_x},#{location_y},#{state},now())
 	</insert>
+	<!--更新实体信息  -->
+	<update id="updateObject" parameterType="userVo">
+		update user  set nickname=#{nickname},mobilePhone=#{mobilePhone},
+		passwd=#{passwd},
+		personal_signature=#{personal_signature},
+		email=#{email},
+		home_address=#{home_address},
+		work_address=#{work_address},
+		IMEI=#{IMEI},
+		sex=#{sex}
+		where id=#{id}
+	</update>
 	
+		
+	<!--用户粉丝关联表  -->
+	<select id="getUserFansCount"  parameterType="map"  resultType="int">
+		select count(id) from user_fans where  userId=#{userId} and fansId=#{fansId}
+	</select>
+	
+
+	
+	 <select id="getUserFans"  parameterType="map"  resultType="String">
+		select fansId from user_fans where  userId=#{userId} 
+	</select>
+	<insert id="addUserFans" parameterType="map">
+		insert into user_fans(userId,fansId)
+		values (#{userId},#{fansId})
+	</insert>
 </mapper>
