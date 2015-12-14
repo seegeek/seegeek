@@ -17,9 +17,8 @@ import org.apache.commons.fileupload.FileItemIterator;
 import org.apache.commons.fileupload.FileItemStream;
 import org.apache.commons.fileupload.disk.DiskFileItemFactory;
 import org.apache.commons.fileupload.servlet.ServletFileUpload;
-import org.apache.commons.lang.StringUtils;
+import org.apache.commons.lang3.StringUtils;
 import org.apache.log4j.Logger;
-import org.restlet.ext.json.JsonConverter;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -33,8 +32,6 @@ import com.gexin.rp.sdk.base.IPushResult;
 import com.gexin.rp.sdk.base.impl.AppMessage;
 import com.gexin.rp.sdk.http.IGtPush;
 import com.gexin.rp.sdk.template.TransmissionTemplate;
-import com.google.gson.Gson;
-import com.google.gson.JsonObject;
 import com.seegeek.cms.androidmessage.PullMessage;
 import com.seegeek.cms.domain.Comment;
 import com.seegeek.cms.domain.LiveMedia;
@@ -940,7 +937,7 @@ public class ItemRest {
 				+ RoomId;
 		try {
 			String info = HttpUtils.GetInfo(url, "");
-			if (org.apache.commons.lang.StringUtils.isNotEmpty(info)) {
+			if (StringUtils.isNotEmpty(info)) {
 				JSONObject json = JSONObject.fromObject(info);
 				net.sf.json.JSONArray array = json.getJSONArray("room");
 				List<String> mobileList = new LinkedList<String>();
@@ -1087,7 +1084,7 @@ public class ItemRest {
 		try {
 			String info = HttpUtils.GetInfo(url, "");
 			System.out.println(info);
-			if (org.apache.commons.lang.StringUtils.isNotEmpty(info)) {
+			if (StringUtils.isNotEmpty(info)) {
 				JSONObject json = JSONObject.fromObject(info);
 				net.sf.json.JSONArray array = json.getJSONArray("room");
 				List<String> mobileList = new LinkedList<String>();

@@ -8,6 +8,7 @@ import java.util.TimerTask;
 import net.sf.json.JSONArray;
 import net.sf.json.JSONObject;
 
+import org.apache.commons.lang3.StringUtils;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.support.ClassPathXmlApplicationContext;
 
@@ -37,7 +38,7 @@ public class CheckRoomTask extends TimerTask {
 			{
 				url = "http://" + Param.licode_server + ":5000/online?RoomId="+liveMedia.getRoomId();
 				info = HttpUtils.GetInfo(url, "");
-				if(org.apache.commons.lang.StringUtils.isNotEmpty(info))
+				if(StringUtils.isNotEmpty(info))
 				{
 				JSONObject json = JSONObject.fromObject(info);
 				JSONArray array=json.getJSONArray("room");

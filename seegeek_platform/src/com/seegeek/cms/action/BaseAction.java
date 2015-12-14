@@ -1,5 +1,5 @@
 package com.seegeek.cms.action;
-
+    
 import java.util.Locale;
 
 import javax.servlet.ServletContext;
@@ -23,10 +23,9 @@ import com.seegeek.cms.service.IRoleResourceService;
 import com.seegeek.cms.service.IRoleService;
 import com.seegeek.cms.service.IUserRoleService;
 import com.seegeek.cms.service.IUserService;
-
+    
 @Component
 public class BaseAction implements  ServletContextAware {
-
 	@Autowired
 	public IUserService userService;
 	@Autowired

@@ -17,7 +17,7 @@ import javax.servlet.http.HttpServletResponse;
 import net.sf.json.JSONArray;
 import net.sf.json.JSONObject;
 
-import org.apache.commons.lang.StringUtils;
+import org.apache.commons.lang3.StringUtils;
 import org.apache.http.client.ClientProtocolException;
 import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -300,7 +300,7 @@ public class UserRest {
 				+ RoomId;
 		try {
 			String info = HttpUtils.GetInfo(url, "");
-			if (org.apache.commons.lang.StringUtils.isNotEmpty(info)) {
+			if (StringUtils.isNotEmpty(info)) {
 				JSONObject json = JSONObject.fromObject(info);
 				JSONArray array = json.getJSONArray("room");
 				System.out.println("array------" + array);
