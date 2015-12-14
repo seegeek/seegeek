@@ -1,5 +1,4 @@
 package com.seegeek.cms.action;
-
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.security.MessageDigest;
@@ -22,14 +21,13 @@ import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.ModelAndView;
 
 import Decoder.BASE64Encoder;
 
+import com.seegeek.cms.action.BaseAction;
+import com.seegeek.cms.action.Constance;
 import com.seegeek.cms.domain.Department;
-import com.seegeek.cms.domain.OPUser;
 import com.seegeek.cms.domain.Role;
 import com.seegeek.cms.domain.User;
 import com.seegeek.cms.domain.UserRole;
@@ -68,7 +66,7 @@ public class SysUserAction extends BaseAction {
 		entity.setPasswd(password);
 		entity = userService.get(Constance.CHECKLOGIN, entity);
 		if (entity != null) {
-			serverCode = messageStorage.load(entity.getMobilePhone());
+			serverCode =(String) request.getSession().getAttribute("rand");
 		} else {
 			return "redirect:/login.jsp";
 		}
