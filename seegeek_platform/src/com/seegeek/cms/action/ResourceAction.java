@@ -72,7 +72,6 @@ public class ResourceAction extends BaseAction{
 		//#####################将用户所有的权限拿出来
 		
 		//#########
-			
 			JSONArray array = new JSONArray();
 			for(Resource resource:resouceList)
 			{
@@ -81,38 +80,44 @@ public class ResourceAction extends BaseAction{
 				
 				JSONObject object=new JSONObject();
 				object.put("id", resource.getId());
+				object.put("text", resource.getName());
 				//menu 	
 				JSONArray menuArray=new JSONArray();
 				//for child
-				
-				JSONObject object2=new JSONObject();
-				object2.put("id", resource.getId());
-				object2.put("text", resource.getName());
-//				object2.put("collapsed", true);
 			
+				for(Resource child:resource.getChildren())
+				{
 				
-				    JSONArray itemsArray=new JSONArray();
-					for(Resource child:resource.getChildren())
+					if(selectedList.contains(child))
 					{
+						JSONArray itemArray=new JSONArray();
+						JSONObject object2=new JSONObject();
+						object2.put("text", child.getName());
 					
-						if(selectedList.contains(child))
+						
+						//3
+						
+						for(Resource child2:child.getChildren())
 						{
-							JSONObject object3=new JSONObject();
-							object3.put("id", child.getId());
-							object3.put("text", child.getName());
-							object3.put("href", child.getUrl());
-							itemsArray.add(object3);
+							
+							if(selectedList.contains(child2))
+							{
+								JSONObject object3=new JSONObject();
+								object3.put("id", child2.getId());
+								object3.put("text", child2.getName());
+								object3.put("href", child2.getUrl());
+								itemArray.add(object3);
+							}
 						}
+						object2.put("items", itemArray);
+						menuArray.add(object2);
 					}
-				//items 添加
-				object2.put("items", itemsArray);
+				}
 				
-				
-				menuArray.add(object2);
-				
-				
+					
 				object.put("menu", menuArray);
 				array.add(object);
+			
 				}
 			}
 			try {
