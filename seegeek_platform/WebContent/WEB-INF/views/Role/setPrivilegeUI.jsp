@@ -41,6 +41,7 @@
 <form action="RoleAction.do?method=setPrivilege" method="post" id="myform">
 <input type="text" name="resourceIds" id="resourceIds"/>
 <input type="text" name="resourceParentIds" id="resourceParentIds"/>
+<input type="text" name="rootIds" id="rootIds"/>
 <input type="hidden" name="roleId" id="roleId" value="${param.id}"/>
     <div class="row">
       <div class="span8 offset3">
@@ -94,31 +95,44 @@
 	      	var selected = tree.getCheckedLeaf();
 	        var ids_str = '';
 	        var parentId='';
+	        var rootId='';
 			 BUI.each(selected,function(node){
 			 if(parentId.indexOf(node.parent.id)==-1)
 	        	{
 		          parentId += node.parent.id + ',';
+	        	}
+				if(node.parent.parent!=null&&rootId.indexOf(node.parent.parent.id)==-1)
+	        	{
+	        		rootId += node.parent.parent.id + ',';
 	        	}
 	          ids_str += node.id + ',';
 	        });
 	        $('.log').text(ids_str);
 	        $('#resourceIds').val(ids_str);
 	       $('#resourceParentIds').val(parentId);
+	       $('#rootIds').val(rootId);
 	 <!--tree 开始渲染-->
 	      tree.on('checkedchange',function(ev){
 	        var checkedNodes=tree.getCheckedLeaf();
 	        var str = '';
 	        var parentId='';
+	        var rootId='';
 	        BUI.each(checkedNodes,function(node){
 	        	if(parentId.indexOf(node.parent.id)==-1)
 	        	{
 		          parentId += node.parent.id + ',';
 	        	}
-	          str += node.id + ',';
+	        	if(node.parent.parent!=null&&rootId.indexOf(node.parent.parent.id)==-1)
+	        	{
+	        		rootId += node.parent.parent.id + ',';
+	        	}
+	        
+	           str += node.id + ',';
 	        });
 	        $('.log').text(str);
 	        $('#resourceIds').val(str);
 	        $('#resourceParentIds').val(parentId);
+	        $('#rootIds').val(rootId);
 	      });
 	     <!--tree已经结束-->
 				
