@@ -46,51 +46,10 @@
     <select id="selectUserRole" parameterType="int"  
         resultMap="userRoleMap">  
          select u.id,u.username,u.passwd, ri.id as  
-        roleId,ur.userId,ri.name as roleName from op_user u left join user_role ur on u.id=ur.userId  
+        roleId,ur.userId,ri.name as roleName from user u left join user_role ur on u.id=ur.userId  
         left join role ri on ur.roleId=ri.id  where ur.userId=#{id}
     </select>  
   
     
-	<!-- 查询所有用户信息"-->
-	<select id="getAll" parameterType="opUserVo" resultType="com.seegeek.cms.domain.OPUser">
-		select * from op_user 
-		<trim>
-			<if test="name!=null and  name!=''">where  username like "%"#{name}"%"</if>
-				order by id desc
-			<if test="startRow!=null"> LIMIT #{startRow},#{pageSize}</if>
-		</trim>
-	</select>
-	<select id="checklogin" parameterType="opUserVo" resultType="com.seegeek.cms.domain.OPUser">
-		select * from op_user where username = #{username} 
-		<trim>
-		<if test="passwd!=null">
-			and passwd=#{passwd} 
-		</if>
-		</trim>
-	</select>
-<!-- 插入数据 -->
-		<insert id="addObject" parameterType="opUserVo" useGeneratedKeys="true" keyProperty="id">
-		insert into op_user(username,passwd,email,sex,phone,departmentId)
-		values (#{username},#{passwd},#{email},#{sex},#{phone},#{departmentId})
-	</insert>
-	
-	<select id="totalNum"  resultType="int">
-		select count(id)  from op_user where 1=1
-			<trim>
-			<if test="name!=null and  name!=''"> and username like "%"#{name}"%"</if>
-			</trim>
-	</select>
-	<delete id="deleteObject" parameterType="int">
-		delete from op_user where id = #{id}
-	</delete>
-	
-<!--更新实体信息  -->
-	<update id="updateObject" parameterType="opUserVo">
-		update op_user  set username=#{username},passwd=#{passwd},email=#{email},phone=#{phone},sex=#{sex},departmentId=#{departmentId}
-		where id=#{id}
-	</update>
-		<select id="getOne" parameterType="opUserVo"  resultMap="opUserMap">
-		select * from op_user where id = #{id} 
-	</select>
-	
+
 </mapper>

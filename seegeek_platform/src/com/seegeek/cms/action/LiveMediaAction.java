@@ -140,6 +140,7 @@ public class LiveMediaAction extends BaseAction {
 		String location= request.getParameter("location");
 		String nickname= request.getParameter("nickname");
 		String play_type= request.getParameter("play_type");
+		String report_num= request.getParameter("report_num");
 		Map<String,String> timeMap=new HashMap<String, String>();
 		if(StringUtils.isNotEmpty(time))
 		{
@@ -149,6 +150,7 @@ public class LiveMediaAction extends BaseAction {
 		hashmap.put("start_time", timeMap.get("start_time"));
 		hashmap.put("end_time", timeMap.get("end_time"));
 		hashmap.put("play_type", play_type);
+		hashmap.put("report_num", report_num);
 		hashmap.put("startRow", request.getParameter("start")==null?0:request.getParameter("start"));
 		hashmap.put("name", request.getParameter("title")==null?"":request.getParameter("title"));
 		hashmap.put("location", location==null?"":location);
@@ -171,6 +173,8 @@ public class LiveMediaAction extends BaseAction {
 			object.put("recordingId", entity.getRecordingId());
 			object.put("start_time", entity.getStart_time());
 			object.put("frame", entity.getFrame());
+			object.put("report_num",entity.getReport_num());
+			object.put("nickname",entity.getUser()==null?"":entity.getUser().getNickname());
 			array.add(object);
 		}
 		resp.put("rows", array.toString());

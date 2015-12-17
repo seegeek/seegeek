@@ -13,6 +13,9 @@ import javax.servlet.http.HttpServletRequest;
 
 import net.sf.json.JSONObject;
 
+import org.activiti.engine.ProcessEngine;
+import org.activiti.engine.RepositoryService;
+import org.activiti.engine.RuntimeService;
 import org.apache.commons.fileupload.FileItemIterator;
 import org.apache.commons.fileupload.FileItemStream;
 import org.apache.commons.fileupload.disk.DiskFileItemFactory;
@@ -71,6 +74,13 @@ public class ItemRest {
 	
 	@Autowired
 	public IVideoService videoService;
+	
+	@Autowired
+	private ProcessEngine processEngine;
+	@Autowired
+	protected RepositoryService repositoryService;
+	@Autowired
+	protected RuntimeService runtimeService;
 
 	@SuppressWarnings("unused")
 	@RequestMapping(value = "/getPublishedList", method = RequestMethod.GET)
@@ -879,15 +889,36 @@ public class ItemRest {
 	public @ResponseBody
 	int report(@RequestParam("ItemId")
 	String ItemId, @RequestParam("B")
-	boolean B) {
+	boolean B,@RequestParam(value="ReportId",required=false)
+	String ReportId) {
 		if (B) {
 			LiveMedia liveMedia = liveMediaService.get(Constance.GET_ONE,
 					Integer.valueOf(ItemId));
 			if (liveMedia != null) {
+//				if(liveMedia.getReport_num()==null||liveMedia.getReport_num()==0)
+//				{
+//					repositoryService.createDeployment().addClasspathResource("task.bpmn").deploy();
+//					String processId=runtimeService.startProcessInstanceByKey("myProcess").getId();
+//					System.out.println("进程Id...."+processId);
+//				}
 				Integer current = (liveMedia.getReport_num() == null ? 0
 						: liveMedia.getReport_num()) + 1;
 				liveMedia.setReport_num(current);
 				liveMediaService.update(Constance.UPDATE_OBJECT, liveMedia);
+				
+
+				if(StringUtils.isNotEmpty(ReportId))
+				{
+					User report=userService.get(Constance.GET_ONE, ReportId);
+					if(report!=null)
+					{
+					Map<String,Object> map=new HashMap<String, Object>();
+					map.put("reportId", ReportId);
+					map.put("mediaId",liveMedia.getId());
+					userService.add("addReportInfo", map);
+					}
+					}
+
 			}
 		}
 		return 0;

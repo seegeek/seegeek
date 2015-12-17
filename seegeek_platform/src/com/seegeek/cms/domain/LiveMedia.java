@@ -1,9 +1,15 @@
 package com.seegeek.cms.domain;
 
+import java.util.List;
+
 /**
  * @author 作者 zhaogaofei
  * @version 创建时间：May 12, 2015 4:21:23 PM
  * @email zhaogaofei2012@163.com 类说明 直播对象信息
+ */
+/**
+ * @author aa
+ *
  */
 public class LiveMedia {
 
@@ -101,10 +107,7 @@ public class LiveMedia {
 	 * 评论数量
 	 */
 	private Integer comment_num;
-	/**
-	 * 已举报人数
-	 */
-	private Integer reported_num;
+
 	
 	private String roomId;
 	
@@ -117,7 +120,10 @@ public class LiveMedia {
 	private String start_date;
 	
 	private User user;
-
+	
+	private List<User> reportList;
+	//用户类型 0 为普通用户,1为后台注册的用户，可以说是机构用户,如记者等
+	private String user_type;
 	public Integer getId() {
 		return id;
 	}
@@ -262,13 +268,6 @@ public class LiveMedia {
 		this.comment_num = comment_num;
 	}
 
-	public Integer getReported_num() {
-		return reported_num;
-	}
-
-	public void setReported_num(Integer reported_num) {
-		this.reported_num = reported_num;
-	}
 
 
 
@@ -348,6 +347,22 @@ public class LiveMedia {
 
 	public void setLongitude(String longitude) {
 		this.longitude = longitude;
+	}
+
+	public String getUser_type() {
+		return user_type;
+	}
+
+	public void setUser_type(String user_type) {
+		this.user_type = user_type;
+	}
+
+	public List<User> getReportList() {
+		return reportList;
+	}
+
+	public void setReportList(List<User> reportList) {
+		this.reportList = reportList;
 	}
 
 

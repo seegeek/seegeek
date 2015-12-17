@@ -49,8 +49,8 @@
     
     <select id="selectUserRole" parameterType="int"  
         resultMap="userRoleMap">  
-         select u.id,u.username,u.passwd, ri.id as  
-        roleId,ur.userId,ri.name as roleName from op_user u left join user_role ur on u.id=ur.userId  
+         select u.id,u.loginName,u.passwd, ri.id as  
+        roleId,ur.userId,ri.name as roleName from user u left join user_role ur on u.id=ur.userId  
         left join role ri on ur.roleId=ri.id  where ur.userId=#{id}
     </select>  
   
@@ -189,7 +189,6 @@
 	
 	
 	
-	
 <insert id="addUserBatch" useGeneratedKeys="true" parameterType="java.util.List">  
     <selectKey resultType="long" keyProperty="id" order="AFTER">  
         SELECT  
@@ -201,4 +200,13 @@
         (#{item.addTime},#{item.empId},#{item.activityId},#{item.flag})  
     </foreach>  
 </insert>  
+
+
+
+<!-- 举报和媒体关联,多对多 关联关系 -->
+<insert id="addReportInfo" useGeneratedKeys="true" parameterType="Map">  
+   insert into report_media_mem(reportId,mediaId,report_time)
+		values (#{reportId},#{mediaId},now())
+</insert>  
+
 </mapper>

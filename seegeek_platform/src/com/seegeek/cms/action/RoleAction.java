@@ -204,12 +204,33 @@ public class RoleAction extends BaseAction {
 				{
 					jbL2.put("checked", false);
 				}
+				
+				JSONArray arrayL3 = new JSONArray();
+				for (Resource rrr:rr.getChildren())
+				{
+					
+					JSONObject	jbL3=new JSONObject();
+					jbL3.put("id", rrr.getId());
+					jbL3.put("text", rrr.getName());
+					if(resourceIdList.contains(rrr.getId()))
+					{
+						jbL3.put("checked", true);
+					}
+					else
+					{
+						jbL3.put("checked", false);
+					}
+					
+					arrayL3.add(jbL3);
+				}
+				jbL2.put("children", arrayL3);
 				arrayL2.add(jbL2);
 			}
 			jbL1.put("children", arrayL2);
 			arrayL1.add(jbL1);
 		}
 		try {
+			System.out.println("------"+arrayL1);
 			PrintWriter out = response.getWriter();
 			out.print(arrayL1.toString());
 			out.close();
@@ -232,11 +253,14 @@ public class RoleAction extends BaseAction {
 		String resourceIds=request.getParameter("resourceIds");
 		String resourceParentIds=request.getParameter("resourceParentIds");
 		String roleId=request.getParameter("roleId");
+		String rootIds=request.getParameter("rootIds");
 		List<String> ids_list=new ArrayList<String>();
 		String[] rids=resourceIds.split(",");
 		String[] rParentids=resourceParentIds.split(",");
+		String[] rRootIds=rootIds.split(",");
 		ids_list.addAll(NumberTools.arrayconverToListString(rids));
 		ids_list.addAll(NumberTools.arrayconverToListString(rParentids));
+		ids_list.addAll(NumberTools.arrayconverToListString(rRootIds));
 		List<RoleResource> list=new ArrayList<RoleResource>();
 		RoleResource roleResource=null;
 		for(int i=0;i<ids_list.size();i++)

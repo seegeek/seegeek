@@ -126,7 +126,8 @@ public class Resource {
 		if (getClass() != obj.getClass())
 			return false;
 		final Resource other = (Resource) obj;
-		if (id != other.id)
+		System.out.println(this.getId()+"--------"+other.getId());
+		if (this.getId() != other.getId())
 			return false;
 		return true;
 	}

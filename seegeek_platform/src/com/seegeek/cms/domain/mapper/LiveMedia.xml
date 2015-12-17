@@ -4,6 +4,7 @@
 <mapper namespace="com.seegeek.cms.domain.LiveMedia">
 	<!-- 主机实体对象与数据库字段的映射 -->
 	<resultMap type="livemediaVo" id="livemediaMap">
+		<result column="id" property="id" />
 		<result column="duration" property="duration" />
 		<result column="start_time" property="start_time" />
 		<result column="end_time" property="end_time" />
@@ -25,50 +26,42 @@
 		<result column="get_collect_num" property="get_collect_num" />
 		<result column="get_like_num" property="get_like_num" />
 		<result column="comment_num" property="comment_num" />
-		<result column="reported_num" property="reported_num" />
 		<result column="roomId" property="roomId" />
 		<result column="recordingId" property="recordingId" />
 		<result column="play_type" property="play_type" />
 		<result column="start_date" property="start_date" />
+		 <association property="user" column="userId" javaType="com.seegeek.cms.domain.User">  
+         <!--column 为sql 查询的属性,id 为对象的字段  -->
+            <id column="userId" property="id"/>  
+            <id column="nickname" property="nickname"/>  
+        </association>  
 	</resultMap>
 	<!-- 查询所有用户信息"-->
 	<select id="getAll" parameterType="livemediaVo"
-		resultType="com.seegeek.cms.domain.LiveMedia">
-		select * from live_media as lm
-		<choose>
-		<when test="nickname !=null and nickname!=''">
-		,user as u ,user_livemedia as mem where  lm.id=mem.livemediaId and u.id=mem.userId and nickname like "%"#{nickname}"%"
-		</when>
-		<otherwise>
+		resultMap="livemediaMap">
+		select * from live_media as lm,user as u ,user_livemedia as mem where  lm.id=mem.livemediaId and u.id=mem.userId 
 		
-		where 1=1
+			<trim>
 		
-		</otherwise>
-		</choose>
-		<trim>
+			<if test="report_num !=null and report_num!=''"> and lm.report_num > 0</if>
+			<if test="nickname !=null and nickname!=''"> and lm.nickname like "%"#{nickname}"%"</if>
 			<if test="name !=null and name!=''"> and lm.title like "%"#{name}"%"</if>
 			<if test="location !=null and location!=''"> and lm.location like "%"#{location}"%"</if>
 			<if test="play_type !=null and play_type!=''"> and lm.play_type =#{play_type}</if>
 			<if test="start_time !=null and start_time!=''"> and lm.start_time BETWEEN #{start_time} and #{end_time}  </if>
 			order by lm.id desc
 			<if test="startRow!=null">LIMIT #{startRow},#{pageSize} </if>
-		</trim>
+			</trim>
 	</select>
 	
 	
 		<select id="totalNum"  resultType="int">
-		select count(lm.id)  from live_media lm
-			<choose>
-		<when test="nickname !=null and nickname!=''">
-		,user as u ,user_livemedia as mem where  lm.id=mem.livemediaId and u.id=mem.userId and nickname like "%"#{nickname}"%"
-		</when>
-		<otherwise>
-		
-		where 1=1
-		
-		</otherwise>
-		</choose>
+		select count(lm.id)  from live_media lm,user as u ,user_livemedia as mem where  lm.id=mem.livemediaId and u.id=mem.userId 
+	
 	<trim>
+		
+			<if test="report_num !=null and report_num!=''">and lm.report_num > 0</if>
+			<if test="nickname !=null and nickname!=''"> and u.nickname like "%"#{nickname}"%"</if>
 			<if test="name !=null and name!=''"> and lm.title like "%"#{name}"%"</if>
 			<if test="location !=null and location!=''"> and lm.location like "%"#{location}"%"</if>
 			<if test="play_type !=null and play_type!=''"> and lm.play_type =#{play_type}</if>
@@ -193,7 +186,7 @@
 		description=#{description}, type=#{type}, seen_num=#{seen_num},
 		location=#{location}, latitude=#{latitude},
 		longitude=#{longitude}, get_praise_num=#{get_praise_num},
-		report_num=#{report_num}, reported_num=#{reported_num},
+		report_num=#{report_num},
 		comment_num=#{comment_num}, get_collect_num=#{get_collect_num}
 		where id=#{id}
 	</update>
@@ -231,6 +224,8 @@ and
 	) >= 0 
 	
 	</select>
+
+
 
 
 </mapper>
