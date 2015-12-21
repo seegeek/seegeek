@@ -46,6 +46,9 @@ public abstract class BaseServiceImpl<T,E extends IBaseDao<T>> implements IBaseS
 	public void update(String mybatisId, T entity) {
 		genericDao.update(mybatisId, entity);
 	}
+	public void update(String mybatisId, Map<String, Object> map) {
+		genericDao.update(mybatisId, map);
+	}
 	
 	public List<T> getList(String mybatisId, Object param) {
 		return 	genericDao.query(mybatisId,param);

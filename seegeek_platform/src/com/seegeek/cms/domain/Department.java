@@ -18,7 +18,7 @@ public class Department {
 	private Department parent;
 	private Integer parentId;
 	private List<Department> children;
-
+	
 	public Integer getId() {
 		return id;
 	}

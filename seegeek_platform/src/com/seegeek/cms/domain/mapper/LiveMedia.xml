@@ -29,12 +29,14 @@
 		<result column="roomId" property="roomId" />
 		<result column="recordingId" property="recordingId" />
 		<result column="play_type" property="play_type" />
+		<result column="publisherId" property="publisherId" />
 		<result column="start_date" property="start_date" />
 		 <association property="user" column="userId" javaType="com.seegeek.cms.domain.User">  
          <!--column 为sql 查询的属性,id 为对象的字段  -->
             <id column="userId" property="id"/>  
             <id column="nickname" property="nickname"/>  
         </association>  
+		 <association property="publisher" column="publisherId" select="queryUser"/>  
 	</resultMap>
 	<!-- 查询所有用户信息"-->
 	<select id="getAll" parameterType="livemediaVo"
@@ -110,6 +112,11 @@
 		</trim>
 		order by start_time
 	</select>
+	
+	
+	
+	
+	
 
 
 	<resultMap type="com.seegeek.cms.domain.LiveMedia"
@@ -162,8 +169,8 @@
 		parameterType="livemediaVo">
 		insert into
 		live_media(start_time,start_date,title,tag,description,location,type,frame,roomId,
-		recordingId,play_type) values
-		(now(),curdate(),#{title},#{tag},#{description},#{location},#{type},#{frame},#{roomId},#{recordingId},#{play_type})
+		recordingId,play_type,publisherId) values
+		(now(),curdate(),#{title},#{tag},#{description},#{location},#{type},#{frame},#{roomId},#{recordingId},#{play_type},#{publisherId})
 	</insert>
 	<insert id="addUserLivemedia" parameterType="map">
 		insert into user_livemedia(livemediaId,userId) values
@@ -227,5 +234,47 @@ and
 
 
 
+	<select id="getApproveInfo" parameterType="livemediaVo"
+		resultMap="livemediaMap">
+			select * from live_media as lm LEFT JOIN approveinfo as appro on lm.id =appro.livemediaId  LEFT JOIN user as u on lm.publisherId=u.id
+			where  lm.report_num > 0
+			<trim>
+			<if test="nickname !=null and nickname!=''"> and lm.nickname like "%"#{nickname}"%"</if>
+			<if test="name !=null and name!=''"> and lm.title like "%"#{name}"%"</if>
+			<if test="location !=null and location!=''"> and lm.location like "%"#{location}"%"</if>
+			<if test="status !=null and status!=''"> and appro.status =#{status}</if>
+			<if test="start_time !=null and start_time!=''"> and lm.start_time BETWEEN #{start_time} and #{end_time}  </if>
+			order by lm.id desc
+			<if test="startRow!=null">LIMIT #{startRow},#{pageSize} </if>
+			</trim>
+	</select>
+
+	<!--2015-12-21 add -->
+	
+	
+		<select id="getListByCollection" parameterType="list"
+		resultMap="livemediaMap">
+		SELECT * from live_media where id in 
+		<trim>
+			
+				<foreach collection="list" item="id" index="index"
+					open="(" close=")" separator=",">
+					#{id}
+				</foreach>
+		</trim>
+		order by start_time
+	</select>
+	
+<resultMap type="com.seegeek.cms.domain.User" id="userMap">  
+    <id property="id" column="id" />  
+    <result property="nickname" column="nickname" />  
+    <result property="loginName" column="loginName" />  
+</resultMap>  
+	
+<select id="queryUser" resultMap="userMap" >  
+    select * from user where id =#{id}  
+</select>  
+	
+	<!--2015-12-21 add   -->
 
 </mapper>

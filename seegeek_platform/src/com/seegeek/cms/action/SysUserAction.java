@@ -211,6 +211,12 @@ public class SysUserAction extends BaseAction {
 		List<Department> departmentList = departmentService
 				.getAll(Constance.GET_ALL);
 		List<Role> roleList = roleService.getAll(Constance.GET_ALL);
+		Map<String,Object> maps=new HashMap<String, Object>();
+		maps.put("departmentId", this.getLoginUserBySesson(request).getDepartmentId());
+		//查询与该用户统同样机构的用户
+		List<User> userlist=userService.getList(Constance.GET_ALL, maps);
+		
+		request.setAttribute("userlist", userlist);
 		request.setAttribute("roleList", roleList);
 		request.setAttribute("departmentList", departmentList);
 		return "SysUser/add";
@@ -238,7 +244,19 @@ public class SysUserAction extends BaseAction {
 	@RequestMapping(params = "method=edit")
 	public String edit(@ModelAttribute("form")
 	User form, HttpServletRequest request, HttpServletResponse response) {
-		userService.update(Constance.UPDATE_OBJECT, form);
+		User entity=userService.get(Constance.GET_ONE, form.getId());
+		if(entity!=null)
+		{
+			entity.setDepartmentId(form.getDepartmentId());
+			entity.setLeaderId(form.getLeaderId());
+			entity.setLoginName(form.getLoginName());
+			entity.setPasswd(form.getPasswd());
+			entity.setEmail(form.getEmail());
+			entity.setMobilePhone(form.getMobilePhone());
+			entity.setRoleIds(form.getRoleIds());
+			entity.setSex(form.getSex());
+			userService.update(Constance.UPDATE_OBJECT, entity);
+		}
 		return "redirect:/op/SysUserAction.do?method=list";
 	}
 
@@ -253,6 +271,10 @@ public class SysUserAction extends BaseAction {
 				.getAll(Constance.GET_ALL);
 		List<UserRole> userRoleList = userRoleService.getList(
 				Constance.GET__LIST_BYUSERID, id);
+		
+		Map<String,Object> maps=new HashMap<String, Object>();
+		maps.put("departmentId",user.getDepartmentId());
+		List<User> userlist=userService.getList(Constance.GET_ALL, maps);
 		List<Integer> selectList = new ArrayList<Integer>();
 		for (UserRole ur : userRoleList) {
 			selectList.add(ur.getRoleId());
@@ -267,6 +289,9 @@ public class SysUserAction extends BaseAction {
 		System.out.println(userRoleList);
 		request.setAttribute("roleList", roleList);
 		request.setAttribute("departmentList", departmentList);
+		logger.info(userlist.size());
+		logger.info("................."+maps);
+		request.setAttribute("userlist", userlist);
 		return "SysUser/edit";
 	}
 
@@ -299,4 +324,96 @@ public class SysUserAction extends BaseAction {
 		userService.delete(Constance.DELETE_OBJECT, id);
 		return "redirect:/op/SysUserAction.do?method=list";
 	}
+	
+	@RequestMapping(params = "method=report_list")
+	public String report_list(ModelMap map, HttpServletRequest request,
+			HttpServletResponse response) {
+		String livemediaId = request.getParameter("livemediaId");
+		request.setAttribute("livemediaId", livemediaId);
+		
+		return "SysUser/report_list";
+	}
+	@SuppressWarnings("unchecked")
+	@RequestMapping(params = "method=getUserByDepartmentId")
+	public String getUserByDepartmentId(ModelMap map, HttpServletRequest request,
+			HttpServletResponse response) {
+		response.setContentType("text/json; charset=utf-8");
+		Map<String, Object> hashmap = new HashMap<String, Object>();
+		hashmap.put("departmentId", request.getParameter("departmentId"));
+		List<User> list = userService.getList(Constance.GET_ALL,
+				hashmap);
+		JSONObject resp = new JSONObject();
+		JSONArray array = new JSONArray();
+		for (User user : list) {
+			JSONObject object = new JSONObject();
+			object.put("id", user.getId());
+			object.put("nickname", user.getNickname());
+			object.put("loginName", user.getLoginName());
+			array.add(object);
+		}
+		resp.put("rows", array.toString());
+		try {
+			PrintWriter out = response.getWriter();
+			out.print(resp);
+			out.close();
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+		return null;
+	}
+	
+	
+	@SuppressWarnings("unchecked")
+	@RequestMapping(params = "method=report_list_json")
+	public String report_list_json(ModelMap map, HttpServletRequest request,
+			HttpServletResponse response) {
+		response.setContentType("text/json; charset=utf-8");
+		Map<String, Object> hashmap = new HashMap<String, Object>();
+		
+		/**
+		 * 2. limit : 单页多少条记录 3. pageIndex : 第几页，同start参数重复，可以选择其中一个使用
+		 */
+		hashmap.put("livemediaId", request.getParameter("livemediaId"));
+		hashmap.put("startRow", request.getParameter("start") == null ? 0
+				: request.getParameter("start"));
+		hashmap.put("pageNum",
+				request.getParameter("pageIndex").equals("0") ? 1 : request
+						.getParameter("pageIndex"));
+		hashmap.put("pageSize", request.getParameter("limit").equals("0") ? 1
+				: request.getParameter("limit"));
+		//统计
+		hashmap.put("countNum", ".reportTotalNum");
+		PageBean<User> pageBean = userService.queryPage("getReportUsers",
+				hashmap);
+		List<User> userlist = pageBean.getResultList();
+		JSONObject resp = new JSONObject();
+		JSONArray array = new JSONArray();
+		for (User user : userlist) {
+			JSONObject object = new JSONObject();
+			object.put("id", user.getId());
+			object.put("nickName", user.getNickname());
+			object.put("loginName", user.getLoginName());
+			object.put("email", user.getEmail());
+			object.put("phone", user.getMobilePhone());
+			object.put("sex", user.getSex().equals("0") ? "男" : "女");
+			array.add(object);
+		}
+		resp.put("rows", array.toString());
+		resp.put("results", pageBean.getTotalRows());
+		resp.put("hasError", false);
+		resp.put("error", "");
+		try {
+			PrintWriter out = response.getWriter();
+			out.print(resp);
+			out.close();
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+		return null;
+	}
+	
+	
+	
+	
+	
 }

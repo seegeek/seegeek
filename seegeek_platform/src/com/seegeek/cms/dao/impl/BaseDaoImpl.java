@@ -6,6 +6,7 @@ import java.util.Map;
 import javax.annotation.Resource;
 
 import org.mybatis.spring.SqlSessionTemplate;
+import org.springframework.util.StringUtils;
 
 import com.seegeek.cms.dao.IBaseDao;
 import com.seegeek.cms.utils.GeneriacUtils;
@@ -78,7 +79,15 @@ public abstract class BaseDaoImpl<T> implements IBaseDao<T> {
 		System.out.println("<<<<startRow>>>>>--"+bean.getStartRow());
 		System.out.println("<<<<endRow>>>>--"+bean.getEndRow());
 		List<T> list=sqlSession.selectList(getDefaultSqlNamespace()+"."+_mybitsId, map);
-		int totalNum=sqlSession.selectOne(getDefaultSqlNamespace()+".totalNum",map);
+		int totalNum=0;
+		if(map.get("countNum")!=null&&map.get("countNum").toString().length()>0)
+		{
+			 totalNum=sqlSession.selectOne(getDefaultSqlNamespace()+map.get("countNum"),map);
+		}
+		else
+		{
+		totalNum=sqlSession.selectOne(getDefaultSqlNamespace()+".totalNum",map);
+		}
 		bean.setTotalRows(totalNum);
 		bean.setResultList(list);
 		return bean;

@@ -18,6 +18,7 @@ public interface IBaseService<T> {
 	void add(String mybatisId,List<T> entity);
 	void add(String mybatisId,Map<String,Object> map);
 	void update(String mybatisId,T entity);
+	void update(String mybatisId,Map<String,Object> map);
 	void delete(String mybatisId,Serializable id);
 	T get(String mybatisId,Serializable id);
 	T get(String mybatisId,T entity);

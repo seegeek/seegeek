@@ -119,11 +119,27 @@ public class LiveMedia {
 	//
 	private String start_date;
 	
+	//发布者的userid
+	private Integer publisherId;
+	//发布者对象
+	private User publisher;
 	private User user;
 	
 	private List<User> reportList;
-	//用户类型 0 为普通用户,1为后台注册的用户，可以说是机构用户,如记者等
-	private String user_type;
+	
+	
+	
+	//审批信息,一个视频可能会有多个审批详情
+	private List<ApproveInfo> approveInfos;
+	
+	//因此需要将审批状态记录到 媒体信息中
+	
+	private String approve_status;
+	
+	
+	//processInstanceId,activiti 实例Id
+	private String processInstanceId;
+	
 	public Integer getId() {
 		return id;
 	}
@@ -349,20 +365,54 @@ public class LiveMedia {
 		this.longitude = longitude;
 	}
 
-	public String getUser_type() {
-		return user_type;
-	}
 
-	public void setUser_type(String user_type) {
-		this.user_type = user_type;
-	}
-
+ 
 	public List<User> getReportList() {
 		return reportList;
 	}
 
 	public void setReportList(List<User> reportList) {
 		this.reportList = reportList;
+	}
+
+	public Integer getPublisherId() {
+		return publisherId;
+	}
+
+	public void setPublisherId(Integer publisherId) {
+		this.publisherId = publisherId;
+	}
+
+	public List<ApproveInfo> getApproveInfos() {
+		return approveInfos;
+	}
+
+	public void setApproveInfos(List<ApproveInfo> approveInfos) {
+		this.approveInfos = approveInfos;
+	}
+
+	public String getApprove_status() {
+		return approve_status;
+	}
+
+	public void setApprove_status(String approve_status) {
+		this.approve_status = approve_status;
+	}
+
+	public User getPublisher() {
+		return publisher;
+	}
+
+	public void setPublisher(User publisher) {
+		this.publisher = publisher;
+	}
+
+	public String getProcessInstanceId() {
+		return processInstanceId;
+	}
+
+	public void setProcessInstanceId(String processInstanceId) {
+		this.processInstanceId = processInstanceId;
 	}
 
 

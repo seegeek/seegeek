@@ -17,6 +17,14 @@
 			<if test="startRow!=null">LIMIT #{startRow},#{pageSize}</if>
 		</trim>
 	</select>
+	<!-- 按userId 来查询 -->
+	<select id="getListByUser" parameterType="int" resultType="com.seegeek.cms.domain.Role">
+		select *  from role as r,user_role as ur where r.id=ur.roleId
+		and ur.userId=#{userId}
+	
+	</select>
+	
+	
 		<select id="totalNum"  resultType="int">
 		select count(id) from  role  where 1=1
 		<trim>

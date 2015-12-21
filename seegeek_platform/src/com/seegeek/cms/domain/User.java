@@ -12,6 +12,10 @@ import java.util.List;
  */
 public class User implements Serializable{
 
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
 	private Integer id;
 	//登录名
 	private String loginName;
@@ -84,6 +88,12 @@ public class User implements Serializable{
 	private String uuid;
 	
 	private String message_code;
+	
+	
+	//领导,记者拥有自己的领导
+	
+	private User leader;
+	private Integer leaderId;
 	
 	
 	
@@ -335,6 +345,21 @@ public class User implements Serializable{
 		this.departmentId = departmentId;
 	}
 
+	public User getLeader() {
+		return leader;
+	}
+
+	public void setLeader(User leader) {
+		this.leader = leader;
+	}
+
+	public Integer getLeaderId() {
+		return leaderId;
+	}
+
+	public void setLeaderId(Integer leaderId) {
+		this.leaderId = leaderId;
+	}
 
 	
 

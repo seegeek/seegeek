@@ -16,6 +16,8 @@ import net.sf.json.JSONObject;
 import org.activiti.engine.ProcessEngine;
 import org.activiti.engine.RepositoryService;
 import org.activiti.engine.RuntimeService;
+import org.activiti.engine.TaskService;
+import org.activiti.engine.task.Task;
 import org.apache.commons.fileupload.FileItemIterator;
 import org.apache.commons.fileupload.FileItemStream;
 import org.apache.commons.fileupload.disk.DiskFileItemFactory;
@@ -42,8 +44,10 @@ import com.seegeek.cms.domain.User;
 import com.seegeek.cms.domain.UserLocation;
 import com.seegeek.cms.domain.Video;
 import com.seegeek.cms.domain.Watch;
+import com.seegeek.cms.enumvo.APPROVE;
 import com.seegeek.cms.enumvo.PLAYTYPE;
 import com.seegeek.cms.param.Param;
+import com.seegeek.cms.service.IApproveInfoService;
 import com.seegeek.cms.service.ICommentService;
 import com.seegeek.cms.service.ILiveMediaService;
 import com.seegeek.cms.service.IUserLocationService;
@@ -81,6 +85,11 @@ public class ItemRest {
 	protected RepositoryService repositoryService;
 	@Autowired
 	protected RuntimeService runtimeService;
+	@Autowired
+	protected TaskService taskService;
+	
+	@Autowired
+	public IApproveInfoService approveInfoService;
 
 	@SuppressWarnings("unused")
 	@RequestMapping(value = "/getPublishedList", method = RequestMethod.GET)
@@ -569,7 +578,7 @@ public class ItemRest {
 
 	@RequestMapping(value = "/uploadImg", method = RequestMethod.POST)
 	public @ResponseBody
-	String uploadImg(HttpServletRequest request, @RequestParam("ImgData")
+	String uploadImg(HttpServletRequest request, @RequestParam(value="ImgData",required=false)
 	String ImgData, @RequestParam("RoomId")
 	String RoomId, @RequestParam("RecordingId")
 	String RecordingId) {
@@ -583,6 +592,7 @@ public class ItemRest {
 			entity.setRecordingId(RecordingId == "" ? entity.getRecordingId()
 					: RecordingId + ".mkv");
 			entity.setPlay_type(PLAYTYPE.LIVE.ordinal());
+			entity.setPublisherId(user.getId());
 			liveMediaService.add(Constance.ADD_OBJECT, entity);
 			Map<String, Object> maps = new HashMap<String, Object>();
 			maps.put("livemediaId", entity.getId());
@@ -895,18 +905,23 @@ public class ItemRest {
 			LiveMedia liveMedia = liveMediaService.get(Constance.GET_ONE,
 					Integer.valueOf(ItemId));
 			if (liveMedia != null) {
-//				if(liveMedia.getReport_num()==null||liveMedia.getReport_num()==0)
-//				{
+				if(liveMedia.getReport_num()==null||liveMedia.getReport_num()==0)
+				{	Map<String,Object> map=new HashMap<String, Object>();
+					map.clear();
+					map.put("status",String.valueOf(APPROVE.APPROVE_1_RUNNING.ordinal()));
+					map.put("livemediaId",ItemId);
+					approveInfoService.add(Constance.ADD_OBJECT, map);
+					
 //					repositoryService.createDeployment().addClasspathResource("task.bpmn").deploy();
 //					String processId=runtimeService.startProcessInstanceByKey("myProcess").getId();
 //					System.out.println("进程Id...."+processId);
-//				}
+				}
 				Integer current = (liveMedia.getReport_num() == null ? 0
 						: liveMedia.getReport_num()) + 1;
 				liveMedia.setReport_num(current);
+				//approve status
+				liveMedia.setApprove_status(String.valueOf(APPROVE.APPROVE_1_APPROVED));
 				liveMediaService.update(Constance.UPDATE_OBJECT, liveMedia);
-				
-
 				if(StringUtils.isNotEmpty(ReportId))
 				{
 					User report=userService.get(Constance.GET_ONE, ReportId);
@@ -917,12 +932,90 @@ public class ItemRest {
 					map.put("mediaId",liveMedia.getId());
 					userService.add("addReportInfo", map);
 					}
-					}
+				}
 
 			}
 		}
 		return 0;
 	}
+	
+	
+	
+	
+	@RequestMapping(value = "/report1", method = RequestMethod.POST)
+	public @ResponseBody
+	int report1(@RequestParam("ItemId")
+	String ItemId, @RequestParam("B")
+	boolean B,@RequestParam(value="ReportId",required=false)
+	String ReportId) {
+		if (B) {
+			LiveMedia liveMedia = liveMediaService.get(Constance.GET_ONE,
+					Integer.valueOf(ItemId));
+			if (liveMedia != null) {
+				if(liveMedia.getReport_num()==null||liveMedia.getReport_num()==0)
+				{	Map<String,Object> map=new HashMap<String, Object>();
+					map.put("livemediaId",ItemId);
+					approveInfoService.add(Constance.ADD_OBJECT, map);
+					//deploye the BPMN xml
+					map.remove("id");
+					User report=userService.get(Constance.GET_ONE, ReportId);
+					if(report!=null)
+					{
+						
+						//按类型区分0,公司内部用户和机构用户
+						//如果是记者必须是有机构的
+						
+						//如果用户是记者类型，需要启动审批流程,此时任务流已经到了usertask1,记者用户需要将usertask1的任务查询出来
+						//然后直接完成或者认领该任务，并且分配上级
+						
+						//
+						//BusinessKey=department_id+role_id =机构+记者
+						String businessKey=liveMedia.getId().toString();
+						repositoryService.createDeployment().addClasspathResource("MyProcess.bpmn").deploy();
+						//业务 记者看到视频进行举报，举报提交给自己的所属机构的上司，上司再给自己的领导
+						//启动流程
+						String processId=runtimeService.startProcessInstanceByKey("myProcess",businessKey,map).getId();
+						
+						
+						
+//						String processId=runtimeService.startProcessInstanceByKey("myProcess",).getId();
+						System.out.println("进程Id...."+processId);
+						
+						//查询与自己相关联的名为usertask1的任务李彪
+//						List<Task> myTaskList=taskService.createTaskQuery().taskDefinitionKey("usertask1").processInstanceBusinessKey(businessKey).list();
+						//找到当前任务，完成当前任务，然后委托给具体用户
+						Task task=taskService.createTaskQuery().taskDefinitionKey("usertask1").processInstanceBusinessKey(businessKey).singleResult();
+//						taskService.complete(task.getId());
+						taskService.complete(task.getId());
+						task=taskService.createTaskQuery().taskDefinitionKey("usertask2").processInstanceBusinessKey(businessKey).singleResult();
+						taskService.claim(task.getId(), "user_"+report.getLeaderId().toString());
+					}
+					
+	
+				}
+				Integer current = (liveMedia.getReport_num() == null ? 0
+						: liveMedia.getReport_num()) + 1;
+				liveMedia.setReport_num(current);
+				//approve status
+				liveMedia.setApprove_status(String.valueOf(APPROVE.APPROVE_1_APPROVED));
+				liveMediaService.update(Constance.UPDATE_OBJECT, liveMedia);
+//				if(StringUtils.isNotEmpty(ReportId))
+//				{
+//					User report=userService.get(Constance.GET_ONE, ReportId);
+//					if(report!=null)
+//					{
+//					Map<String,Object> map=new HashMap<String, Object>();
+//					map.put("reportId", ReportId);
+//					map.put("mediaId",liveMedia.getId());
+//					userService.add("addReportInfo", map);
+//					}
+//				}
+
+			}
+		}
+		return 0;
+	}
+	
 
 	@RequestMapping(value = "/getReportNum", method = RequestMethod.GET)
 	public @ResponseBody

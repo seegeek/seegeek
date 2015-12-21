@@ -23,8 +23,12 @@
 		<result column="uuid" property="uuid"/>
 		<result column="message_code" property="message_code"/>
 		<result column="departmentId" property="departmentId"/>
+		<result column="leaderId" property="leaderId"/>
     	<association property="department" column="departmentId" 
 			select="getDepartmentById" />
+			<!--查询领导信息  -->
+    	<association property="leader" column="leaderId" 
+			select="getUserByid" />
 		<collection property="roleList" resultMap="roleResult" />
 		</resultMap>
 	
@@ -45,7 +49,11 @@
 		select * from department where id =
 		#{id}
 	</select>
-			
+	
+	<select id="getUserByid" parameterType="Integer" resultType="com.seegeek.cms.domain.User">
+	select * from user where id = #{id}
+	</select>
+	
     
     <select id="selectUserRole" parameterType="int"  
         resultMap="userRoleMap">  
@@ -61,6 +69,8 @@
 		select *  from user 
 		where 1=1
 		<trim>
+		
+			<if test="departmentId!=null and  departmentId!=''"> and departmentId =#{departmentId}</if>
 			<if test="name!=null and  name!=''"> and nickname like "%"#{name}"%"</if>
 				order by id desc
 			<if test="startRow!=null"> LIMIT #{startRow},#{pageSize}</if>
@@ -111,8 +121,8 @@
 
 	<!-- 插入数据 -->
 	<insert id="addObject" parameterType="userVo">
-		insert into user(id,nickname,icon,loginName,passwd,mobilePhone,email,IMEI,location_x,location_y,state,data_time,departmentId)
-		values (#{id},#{nickname},#{icon},#{loginName},#{passwd},#{mobilePhone},#{email},#{IMEI},#{location_x},#{location_y},#{state},now(),#{departmentId})
+		insert into user(id,nickname,icon,loginName,passwd,mobilePhone,email,IMEI,location_x,location_y,state,data_time,departmentId,leaderId)
+		values (#{id},#{nickname},#{icon},#{loginName},#{passwd},#{mobilePhone},#{email},#{IMEI},#{location_x},#{location_y},#{state},now(),#{departmentId},#{leaderId})
 	</insert>
 	<!--insert into  device data  -->
 	<insert id="addDeviceObject" parameterType="Map">
@@ -128,6 +138,7 @@
 		email=#{email},
 		home_address=#{home_address},
 		work_address=#{work_address},
+		leaderId=#{leaderId},
 		IMEI=#{IMEI},
 		sex=#{sex},
 		icon=#{icon},
@@ -208,5 +219,23 @@
    insert into report_media_mem(reportId,mediaId,report_time)
 		values (#{reportId},#{mediaId},now())
 </insert>  
+<!-- 查询与媒体文件所关联的所有举报者 -->
+	<select id="getReportUsers"  parameterType="map"  resultType="com.seegeek.cms.domain.User">
+	select * from user as u ,report_media_mem as rmm where u.id=rmm.reportId
+		<trim>
+		<if test="livemediaId !=null and livemediaId!=''">
+			and mediaId=#{livemediaId} 
+		</if>
+		</trim>
+	</select>
+<!-- 查询与媒体文件所关联的所有举报者 -->
+	<select id="reportTotalNum"  resultType="int">
+	select count(u.id) from user as u ,report_media_mem as rmm where u.id=rmm.reportId
+		<trim>
+		<if test="livemediaId !=null and livemediaId!=''">
+			and mediaId=#{livemediaId} 
+		</if>
+		</trim>
+	</select>
 
 </mapper>
