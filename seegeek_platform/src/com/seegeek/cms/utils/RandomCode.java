@@ -59,7 +59,6 @@ public class RandomCode extends HttpServlet {
 		response.setHeader("Cache-Control", "no-cache");
 		response.setDateHeader("Expires", 0);
 		try {
-			// ���ͼ��ҳ��?
 			BufferedImage img = null;
 			if (number != 0) {
 				if (max != 0) {
@@ -76,7 +75,7 @@ public class RandomCode extends HttpServlet {
 			response.getOutputStream().flush();
 			response.getOutputStream().close();
 		} catch (Exception e) {
-			System.out.println("����:" + e);
+		e.printStackTrace();
 		}
 	}
 
@@ -97,23 +96,19 @@ public class RandomCode extends HttpServlet {
 		}
 
 		public BufferedImage creatImage() {
-			// ���ڴ��д���ͼ��
+			// define the image 
 			int width = 60, height = 20;
 			BufferedImage image = new BufferedImage(width, height,
 					BufferedImage.TYPE_INT_RGB);
-			// ��ȡͼ��������
+			// create  a cavans
 			Graphics g = image.getGraphics();
-			// ��������
+			// random number
 			Random random = new Random();
-			// �趨����ɫ
+			// color 
 			g.setColor(getRandColor(200, 250));
 			g.fillRect(0, 0, width, height);
-			// �趨����
+			//font type
 			g.setFont(new Font("Times New Roman", Font.PLAIN, 18));
-			// ���߿�
-			// g.setColor(new Color());
-			// g.drawRect(0,0,width-1,height-1);
-			// ������155������ߣ�ʹͼ���е���֤�벻�ױ��������̽�⵽
 			g.setColor(getRandColor(160, 200));
 			for (int i = 0; i < 155; i++) {
 				int x = random.nextInt(width);
@@ -122,18 +117,14 @@ public class RandomCode extends HttpServlet {
 				int yl = random.nextInt(12);
 				g.drawLine(x, y, x + xl, y + yl);
 			}
-			// ȡ���������֤��?(4λ����)
-			// String rand = request.getParameter("rand");
-			// rand = rand.substring(0,rand.indexOf("."));
+		
 			for (int i = 0; i < 4; i++) {
 				String rand = String.valueOf(random.nextInt(10));
 				sRand += rand;
-				// ����֤����ʾ��ͼ����
 				g.setColor(new Color(20 + random.nextInt(110), 20 + random
-						.nextInt(110), 20 + random.nextInt(110)));// ���ú����?4����ɫ��ͬ����������Ϊ����̫�ӽ�����ֻ��ֱ�����?
+						.nextInt(110), 20 + random.nextInt(110)));
 				g.drawString(rand, 13 * i + 6, 16);
 			}
-			// ͼ����Ч
 			g.dispose();
 			return image;
 		}
@@ -146,57 +137,35 @@ public class RandomCode extends HttpServlet {
 		}
 
 		public BufferedImage creatImage(int number) {
-			// ���ڴ��д���ͼ��
 			String num = String.valueOf(number);
 			char[] vs = num.toCharArray();
 
 			int width = vs.length * 60 / 4, height = 18;
 			BufferedImage image = new BufferedImage(width, height,
 					BufferedImage.TYPE_INT_RGB);
-			// ��ȡͼ��������
 			Graphics g = image.getGraphics();
-			// ��������
 			Random random = new Random();
-			// �趨����ɫ
 			g.setColor(Color.WHITE);
 			g.fillRect(0, 0, width, height);
-			// �趨����
 			g.setFont(new Font("Impact", Font.PLAIN, 14));
-			// ���߿�
-			// g.setColor(new Color());
-			// g.drawRect(0,0,width-1,height-1);
-			// ������155������ߣ�ʹͼ���е���֤�벻�ױ��������̽�⵽
-			/*
-			 * g.setColor(getRandColor(160, 200)); for (int i = 0; i < 155; i++) {
-			 * int x = random.nextInt(width); int y = random.nextInt(height);
-			 * int xl = random.nextInt(12); int yl = random.nextInt(12);
-			 * g.drawLine(x, y, x + xl, y + yl); }
-			 */
-			// ȡ���������֤��?(4λ����)
-			// String rand = request.getParameter("rand");
-			// rand = rand.substring(0,rand.indexOf("."));
 			for (int i = 0; i < vs.length; i++) {
 				String rand = String.valueOf(vs[i]);
 				sRand += rand;
-				// ����֤����ʾ��ͼ����
 				g.setColor(new Color(20 + random.nextInt(110), 20 + random
-						.nextInt(110), 20 + random.nextInt(110)));// ���ú����?4����ɫ��ͬ����������Ϊ����̫�ӽ�����ֻ��ֱ�����?
+						.nextInt(110), 20 + random.nextInt(110)));
 				g.drawString(rand, 13 * i + 6, 16);
 
 			}
-			// ͼ����Ч
 			g.dispose();
 			return image;
 		}
 
 		public BufferedImage creatImage3D(int number, int max) {
-			// ���ڴ��д���ͼ��
 			int width = 60, height = 10;
 			int x = number * width / max;
 			System.out.println(x);
 			BufferedImage image = new BufferedImage(x, height,
 					BufferedImage.TYPE_INT_RGB);
-			// ��ȡͼ��������
 
 			Graphics g = image.getGraphics();
 			// g.fillRect(0, 0, width, height);
@@ -204,7 +173,6 @@ public class RandomCode extends HttpServlet {
 			g.setColor(this.getRandColor(100, 200));
 			g.draw3DRect(0, 0, x, height, true);
 			g.fill3DRect(0, 0, x, height, true);
-			// ͼ����Ч
 			g.dispose();
 			return image;
 		}
