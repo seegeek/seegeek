@@ -30,6 +30,7 @@
 		<result column="recordingId" property="recordingId" />
 		<result column="play_type" property="play_type" />
 		<result column="publisherId" property="publisherId" />
+		<result column="processInstanceId" property="processInstanceId" />
 		<result column="start_date" property="start_date" />
 		 <association property="user" column="userId" javaType="com.seegeek.cms.domain.User">  
          <!--column 为sql 查询的属性,id 为对象的字段  -->
@@ -194,6 +195,7 @@
 		location=#{location}, latitude=#{latitude},
 		longitude=#{longitude}, get_praise_num=#{get_praise_num},
 		report_num=#{report_num},
+		processInstanceId=#{processInstanceId},
 		comment_num=#{comment_num}, get_collect_num=#{get_collect_num}
 		where id=#{id}
 	</update>

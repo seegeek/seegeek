@@ -23,6 +23,7 @@ import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -57,12 +58,7 @@ public class UserRest {
 		return "title";
 	}
 
-	@RequestMapping(value = "/publish")
-	public @ResponseBody
-	String publish() {
-		System.out.println("...........");
-		return "publish";
-	}
+
 
 	@RequestMapping(value = "/user", method = RequestMethod.GET)
 	public @ResponseBody
@@ -148,9 +144,11 @@ public class UserRest {
 	 */
 	@RequestMapping(value = "/getVerification", method = RequestMethod.GET)
 	public @ResponseBody
-	int getVerification(@RequestParam(value="UserId",required=false)
-	String UserId,@RequestParam(value="Username",required=false)  String Username ,
-	@RequestParam(value="IMEI",required=false)  String IMEI) {
+	int getVerification(@RequestBody String body) {
+	
+		
+		com.alibaba.fastjson.JSONObject object=com.alibaba.fastjson.JSONObject.parseObject(body);
+		logger.info("body-----"+body);
 		String sRand = "";
 		Random random = new Random();
 		for (int i = 0; i < 4; i++) {
@@ -159,13 +157,13 @@ public class UserRest {
 		}
 		try {
 			
-			HttpUtils.POST_SMS(sRand, "2", UserId);
+			HttpUtils.POST_SMS(sRand, "2", object.getString("UserId"));
 			//bind user messagecode
 			User entity=new User();
-			entity.setMobilePhone(UserId);
-			entity.setLoginName(Username);
+			entity.setMobilePhone(object.getString("UserId"));
+			entity.setLoginName(object.getString("Username"));
 			entity=userService.get(Constance.CHECKLOGIN, entity);
-			messageStorage.addOrUpdate(entity==null?UserId:entity.getMobilePhone(),sRand);
+			messageStorage.addOrUpdate(entity==null?object.getString("UserId"):entity.getMobilePhone(),sRand);
 //			entity.setMessage_code(sRand);
 //			logger.info(messageStorage.load(entity.getMobilePhone()));
 			return Integer.valueOf(sRand);
@@ -177,18 +175,16 @@ public class UserRest {
 
 	@RequestMapping(value = "/register", method = RequestMethod.POST)
 	public @ResponseBody
-	int register(HttpServletRequest request, @RequestParam("UserId")
-	String UserId, @RequestParam(value="Verification",required=false) 
-	String Verification, @RequestParam(value="PasswordEn",required=false)
-	String PasswordEn, @RequestParam(value="IMEI",required=false)
-	String IMEI) {
+	int register(HttpServletRequest request,@RequestBody String body) {
+		com.alibaba.fastjson.JSONObject object=com.alibaba.fastjson.JSONObject.parseObject(body);
+		logger.info("body-----"+body);
 		User entity = new User();
-		entity.setLoginName(UserId);
-		entity.setMobilePhone(UserId);
-		entity.setPasswd(PasswordEn);
-		entity.setIMEI(IMEI);
+		entity.setLoginName(object.getString("UserId"));
+		entity.setMobilePhone(object.getString("UserId"));
+		entity.setPasswd(object.getString("PasswordEn"));
+		entity.setIMEI(object.getString("IMEI"));
 		// 查询实体信息是否已经存在
-		User user = userService.get(Constance.GET_BY_MOBILEPHONE, UserId);
+		User user = userService.get(Constance.GET_BY_MOBILEPHONE, object.getString("UserId"));
 		if (user == null) {
 			userService.add(Constance.ADD_OBJECT, entity);
 			entity = userService.get(Constance.GET_BY_MOBILEPHONE, entity);
@@ -202,13 +198,14 @@ public class UserRest {
 	
 	@RequestMapping(value = "/checkMobilePhone", method = RequestMethod.POST)
 	public @ResponseBody
-	int checkMobilePhone(HttpServletRequest request, @RequestParam("UserId")
-	String UserId) {
+	int checkMobilePhone(HttpServletRequest request,@RequestBody String body) {
+		com.alibaba.fastjson.JSONObject object=com.alibaba.fastjson.JSONObject.parseObject(body);
+		logger.info("body-----"+body);
 		User entity = new User();
-		entity.setMobilePhone(UserId);
+		entity.setMobilePhone(object.getString("UserId"));
 		
 		// 查询实体信息是否已经存在
-		User user = userService.get(Constance.GET_BY_MOBILEPHONE, UserId);
+		User user = userService.get(Constance.GET_BY_MOBILEPHONE, object.getString("UserId"));
 		if (user == null) {
 			return 0;
 		} else {
@@ -292,6 +289,11 @@ public class UserRest {
 		return "";
 	}
 
+	/**新版可能弃用
+	 * @param request
+	 * @param RoomId
+	 * @return
+	 */
 	@RequestMapping(value = "/online", method = RequestMethod.GET)
 	public @ResponseBody
 	String online(HttpServletRequest request, @RequestParam("RoomId")
@@ -329,16 +331,15 @@ public class UserRest {
 
 	@RequestMapping(value = "/verify", method = RequestMethod.POST)
 	public @ResponseBody
-	int verify(HttpServletRequest request, HttpServletResponse response,
-			@RequestParam("UserId")
-			String UserId, @RequestParam("PasswordEn")
-			String PasswordEn, @RequestParam("IMEI")
-			String IMEI) {
+	int verify(HttpServletRequest request, HttpServletResponse response,@RequestBody String body) {
+		logger.info("------"+body);
+		com.alibaba.fastjson.JSONObject object=com.alibaba.fastjson.JSONObject.parseObject(body);
+	
 		User entity = new User();
-		entity.setPasswd(PasswordEn);
-		entity.setMobilePhone(UserId);
-		entity.setIMEI(IMEI);
-		entity.setEmail(UserId);
+		entity.setPasswd(object.getString("PasswordEn"));
+		entity.setMobilePhone(object.getString("UserId"));
+		entity.setIMEI(object.getString("IMEI"));
+		entity.setEmail(object.getString("UserId"));
 		
 		// 查询实体信息是否已经存在
 		User user = userService.get(Constance.CHECKLOGIN, entity);
@@ -362,55 +363,18 @@ public class UserRest {
 		request.getSession().removeAttribute("user");
 	}
 
-	private void lookCook(HttpServletRequest request,
-			HttpServletResponse response) {
-
-		String username = request.getParameter("username");
-		String password = request.getParameter("password");
-
-		try {
-			// 声明cookie
-			Cookie autoCookie = null;
-			// 获取所有的cookie的数组
-			Cookie cookies[] = request.getCookies();
-			// 遍历判断
-			for (Cookie cookie : cookies) {
-				// 判断是否已经存在cookie记录
-				if ("autoLogin".equals(cookie.getName())) {
-					// 存在即直接赋值
-					autoCookie = cookie;
-					// 并改变内容
-					String newValue = username + ":" + password + ":"
-							+ username;
-					System.out.println(newValue);
-					autoCookie.setValue(newValue);
-				} else {
-					String cookieValue = username + ":" + password + ":"
-							+ username;
-					/*
-					 * Control character in cookie value or attribute.
-					 * 当存入的数据是中文时,cookie会出现乱码现象 需要进行编码的转换
-					 */
-					autoCookie = new Cookie("autoLogin", URLEncoder.encode(
-							cookieValue, "UTF-8"));
-				}
-			}
-
-			// 设置cookie的最长的存活时间
-			autoCookie.setMaxAge(365 * 24 * 3600);
-			response.addCookie(autoCookie);
-		} catch (Exception e) {
-		}
-	}
 
 	@RequestMapping(value = "/checkLoginStatus", method = RequestMethod.GET)
 	public @ResponseBody
-	int checkLoginStatus(HttpServletRequest request, @RequestParam("UserId")
-	String UserId) {
+	int checkLoginStatus(HttpServletRequest request,@RequestBody String body) {
+	
+		
+		com.alibaba.fastjson.JSONObject object=com.alibaba.fastjson.JSONObject.parseObject(body);
+		logger.info("body-----"+body);
 		User sessionUser = (User) request.getSession().getAttribute("user");
 		// 查询实体信息是否已经存在
 		if (sessionUser != null
-				&& sessionUser.getMobilePhone().equals(UserId.trim())) {
+				&& sessionUser.getMobilePhone().equals(object.getString("UserId"))) {
 			// logger.info("Id--------" + sessionUser.getMobilePhone());
 			return 0;
 		} else {
@@ -445,21 +409,21 @@ public class UserRest {
 
 	@RequestMapping(value = "/careLocation", method = RequestMethod.POST)
 	public @ResponseBody
-	int careLocation(HttpServletRequest request, @RequestParam("Longitude")
-	String Longitude, @RequestParam("Latitude")
-	String Latitude) {
+	int careLocation(HttpServletRequest request,@RequestBody String body) {
+		com.alibaba.fastjson.JSONObject object=com.alibaba.fastjson.JSONObject.parseObject(body);
+		logger.info(body);
 		User sessionUser = (User) request.getSession().getAttribute("user");
 		// logger.info("Id--------" + sessionUser.getMobilePhone());
 		Map<String, Object> map = new HashMap<String, Object>();
-		map.put("longitude", Longitude);
-		map.put("latitude", Latitude);
+		map.put("longitude", object.getString("Longitude"));
+		map.put("latitude", object.getString("Latitude"));
 		map.put("userId", sessionUser.getId());
 		int count = userLocationService.queryCount(
 				Constance.GET_USER_LOCATIONS_COUNT, map);
 		if (count == 0) {
 			UserLocation entity = new UserLocation();
-			entity.setLatitude(Latitude);
-			entity.setLongitude(Longitude);
+			entity.setLatitude(object.getString("Latitude"));
+			entity.setLongitude(object.getString("Longitude"));
 			entity.setUserId(sessionUser.getId());
 			userLocationService.add(Constance.ADD_OBJECT, entity);
 			return 0;
@@ -470,27 +434,25 @@ public class UserRest {
 	// 绑定邮箱功能,登陆时可以通过邮箱登录
 
 	@RequestMapping(value = "/active_email", method = RequestMethod.GET)
-	public String active_email(HttpServletRequest request,
-			@RequestParam("Email")
-			String Email, @RequestParam("Token")
-			String Token) {
+	public String active_email(HttpServletRequest request,@RequestBody String body) {
+		com.alibaba.fastjson.JSONObject object=com.alibaba.fastjson.JSONObject.parseObject(body);
+		logger.info(body);
 		User sessionUser = (User) request.getSession().getAttribute("user");
 		// logger.info("Id--------" + sessionUser.getMobilePhone());
 		User entity = userService.get(Constance.GET_BY_MOBILEPHONE, sessionUser
 				.getMobilePhone());
 
-		if (StringUtils.isNotEmpty(Email) && StringUtils.isNotEmpty(Token)) {
+		if (StringUtils.isNotEmpty(object.getString("Email")) && StringUtils.isNotEmpty(object.getString("Token"))) {
 			Double time = (System.currentTimeMillis() - entity.getBind_time()) / 1000 / 60 / 60;
-			if (entity.getEmail().equals(Email)
-					&& entity.getToken().equals(Token)) {
+			if (entity.getEmail().equals(object.getString("Email"))
+					&& entity.getToken().equals(object.getString("Token"))) {
 
 				if (time <= 24.0) {
-					System.out.println("激活");
 					entity.setActive_status("1");
 					userService.update(Constance.UPDATE_OBJECT, entity);
 					return "Email/success";
 				} else {
-					System.out.println("您的token已过期,请重新申请! ");
+					logger.info("您的token已过期,请重新申请! ");
 					return "Email/timeout";
 				}
 			}
@@ -500,8 +462,9 @@ public class UserRest {
 
 	@RequestMapping(value = "/bind_email", method = RequestMethod.POST)
 	public @ResponseBody
-	int bind_email(HttpServletRequest request, @RequestParam("Email")
-	String Email) {
+	int bind_email(HttpServletRequest request,@RequestBody String body) {
+		com.alibaba.fastjson.JSONObject object=com.alibaba.fastjson.JSONObject.parseObject(body);
+		logger.info(body);
 		StringBuffer buffer = new StringBuffer();
 		User sessionUser = (User) request.getSession().getAttribute("user");
 		// logger.info("Id--------" + sessionUser.getMobilePhone());
@@ -509,12 +472,12 @@ public class UserRest {
 				+ UUID.randomUUID().toString().replaceAll("-", "");
 		User entity = userService.get(Constance.GET_BY_MOBILEPHONE, sessionUser
 				.getMobilePhone());
-		entity.setEmail(Email == "" ? entity.getEmail() : Email);
+		entity.setEmail(object.getString("Email") == "" ? entity.getEmail() : object.getString("Email"));
 		entity.setToken(token);
 		entity.setBind_time(Double.valueOf(System.currentTimeMillis()));
 		buffer.append("<p><font style='font-weight:bold;'>Hi,"
 				+ entity.getNickname() + "</font></p>");
-		buffer.append("<p>seegeek 正在尝试绑定邮箱地址【" + Email + "】到你的账号</p>");
+		buffer.append("<p>seegeek 正在尝试绑定邮箱地址【" + object.getString("Email") + "】到你的账号</p>");
 		buffer
 				.append("<p>如果这是你的操作，请<a href='http://"+Param.licode_server+":8081/seegeek/rest/active_email?Email="
 						+ entity.getEmail()
@@ -522,7 +485,7 @@ public class UserRest {
 						+ token
 						+ "'+>点击确认</a>完成邮箱绑定</p>");
 		buffer.append("<p>如果你没有操作绑定此邮箱，请忽略此邮件</p>");
-		Mail.send(Param.SMTP_SERVER, Param.EMAIL_USERNAME, Email, "激活你的邮箱",
+		Mail.send(Param.SMTP_SERVER, Param.EMAIL_USERNAME, object.getString("Email"), "激活你的邮箱",
 				buffer.toString(), Param.EMAIL_USERNAME, Param.EMAIL_PASSWORD);
 		userService.update(Constance.UPDATE_OBJECT, entity);
 		return 0;
@@ -530,16 +493,9 @@ public class UserRest {
 
 	@RequestMapping(value = "/update", method = RequestMethod.POST)
 	public @ResponseBody
-	int update(HttpServletRequest request, @RequestParam("Nickname")
-	String Nickname, @RequestParam("MobilePhone")
-	String MobilePhone, @RequestParam("Passwd")
-	String Passwd, @RequestParam("Personal_signature")
-	String Personal_signature, @RequestParam("Email")
-	String Email, @RequestParam("Home_address")
-	String Home_address, @RequestParam("Work_address")
-	String Work_address, @RequestParam("Icon")
-	String Icon, @RequestParam("Sex")
-	String Sex) {
+	int update(HttpServletRequest request,@RequestBody String body) {
+		com.alibaba.fastjson.JSONObject object=com.alibaba.fastjson.JSONObject.parseObject(body);
+		logger.info(body);
 		User sessionUser = (User) request.getSession().getAttribute("user");
 		// logger.info("Id--------" + sessionUser.getMobilePhone());
 		User entity = userService.get(Constance.GET_BY_MOBILEPHONE, sessionUser
@@ -549,31 +505,41 @@ public class UserRest {
 
 			try {
 				String img = QRCodeDecoderHandlerUtil
-						.decoderQRCodeForBase64(Icon);
+						.decoderQRCodeForBase64(object.getString("Icon"));
 				entity.setIcon(img);
 			} catch (Exception e) {
 				e.printStackTrace();
 			}
 			entity
-					.setNickname(Nickname == "" ? entity.getNickname()
-							: Nickname);
-			entity.setMobilePhone(MobilePhone == "" ? entity.getMobilePhone()
-					: MobilePhone);
-			entity.setPasswd(Passwd == "" ? entity.getPasswd() : Passwd);
-			entity.setPersonal_signature(Personal_signature == "" ? entity
-					.getPersonal_signature() : Personal_signature);
-			entity.setEmail(Email == "" ? entity.getEmail() : Email);
-			entity.setHome_address(Home_address == "" ? entity
-					.getHome_address() : Home_address);
-			entity.setWork_address(Work_address == "" ? entity
-					.getWork_address() : Work_address);
-			entity.setSex(Sex == "" ? entity.getSex() : Integer.valueOf(Sex));
+					.setNickname(object.getString("Nickname") == "" ? entity.getNickname()
+							: object.getString("Nickname") );
+			entity.setMobilePhone(object.getString("MobilePhone") == "" ? entity.getMobilePhone()
+					: object.getString("MobilePhone") );
+			entity.setPasswd(object.getString("Passwd") == "" ? entity.getPasswd() : object.getString("Passwd") );
+			entity.setPersonal_signature(object.getString("Personal_signature") == "" ? entity
+					.getPersonal_signature() : object.getString("Personal_signature") );
+			entity.setEmail(object.getString("Email") == "" ? entity.getEmail() : object.getString("Email") );
+			entity.setHome_address(object.getString("Home_address") == "" ? entity
+					.getHome_address() : object.getString("Home_address") );
+			entity.setWork_address(object.getString("Work_address") == "" ? entity
+					.getWork_address() : object.getString("Work_address") );
+			entity.setSex(object.getString("Sex") == "" ? entity.getSex() : Integer.valueOf(object.getString("Sex")));
 			userService.update(Constance.UPDATE_OBJECT, entity);
 			return 0;
 		}
 		return 1;
 	}
 
+	/**该功能可能会被废弃
+	 * @param Role
+	 * @param UserId
+	 * @param IMEI
+	 * @param RoomName
+	 * @param Location
+	 * @param Longitude
+	 * @param Latitude
+	 * @return
+	 */
 	@RequestMapping(value = "/requestToken", method = RequestMethod.POST)
 	public @ResponseBody
 	String requestToken(@RequestParam("Role")

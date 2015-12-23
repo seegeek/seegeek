@@ -19,6 +19,7 @@
 		<typeAlias alias="roleResourceVo" type="com.seegeek.cms.domain.RoleResource"/>
 		<typeAlias alias="userRoleVo" type="com.seegeek.cms.domain.UserRole"/>
 		<typeAlias alias="videoVo" type="com.seegeek.cms.domain.Video"/>
+		<typeAlias alias="approveInfoVo" type="com.seegeek.cms.domain.ApproveInfo"/>
 	</typeAliases>
 	
 	<!-- 用来加载配置ORM 映射文件 -->
@@ -36,5 +37,6 @@
 	    <mapper resource="com/seegeek/cms/domain/mapper/RoleResource.xml"/>
 	    <mapper resource="com/seegeek/cms/domain/mapper/UserRole.xml"/>
 	    <mapper resource="com/seegeek/cms/domain/mapper/Video.xml"/>
+	    <mapper resource="com/seegeek/cms/domain/mapper/ApproveInfo.xml"/>
 	</mappers>
 </configuration>

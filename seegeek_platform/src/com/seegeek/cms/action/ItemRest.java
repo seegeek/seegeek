@@ -91,14 +91,15 @@ public class ItemRest {
 	@Autowired
 	public IApproveInfoService approveInfoService;
 
-	@SuppressWarnings("unused")
 	@RequestMapping(value = "/getPublishedList", method = RequestMethod.GET)
 	public @ResponseBody
-	String getPublishedList(HttpServletRequest request, @RequestParam("UserId")
-	String UserId) {
+	String getPublishedList(HttpServletRequest request,@RequestBody String body) {
+		com.alibaba.fastjson.JSONObject jsonobject=com.alibaba.fastjson.JSONObject.parseObject(body);
+		logger.info(body);
+		
 		Map<String, Object> map = new HashMap<String, Object>();
 		User user = (User) request.getSession().getAttribute("user");
-		map.put("userId", user.getId());
+		map.put(jsonobject.getString("UserId"), user.getId());
 		JSONArray array = new JSONArray();
 		List<LiveMedia> list = liveMediaService.getListByUserId(
 				Constance.GET__LIST_BYUSERID, map);
@@ -183,10 +184,7 @@ public class ItemRest {
 
 	@RequestMapping(value = "/getItemList", method = RequestMethod.GET)
 	public @ResponseBody
-	String getItemList(HttpServletRequest request, @RequestParam("SortTag")
-	int SortTag, @RequestParam("Offset")
-	int Offset, @RequestParam("Num")
-	int Num) {
+	String getItemList(HttpServletRequest request,@RequestBody String body) {
 		Map<String, Object> map = new HashMap<String, Object>();
 		User user = (User) request.getSession().getAttribute("user");
 		map.put("userId", user.getId());
@@ -218,10 +216,11 @@ public class ItemRest {
 
 	@RequestMapping(value = "/getItemSource", method = RequestMethod.GET)
 	public @ResponseBody
-	String getItemSource(HttpServletRequest request, @RequestParam("ItemId")
-	String ItemId) {
+	String getItemSource(HttpServletRequest request,@RequestBody String body) {
+		com.alibaba.fastjson.JSONObject jsonobject=com.alibaba.fastjson.JSONObject.parseObject(body);
+		logger.info(body);
 		// logger.info("itemid---" + ItemId);
-		LiveMedia liveMedia = liveMediaService.get(Constance.GET_ONE, ItemId);
+		LiveMedia liveMedia = liveMediaService.get(Constance.GET_ONE, jsonobject.getString("ItemId"));
 		if (liveMedia != null) {
 			com.alibaba.fastjson.JSONObject object = new com.alibaba.fastjson.JSONObject();
 			if (liveMedia.getPlay_type() == 0) {
@@ -292,12 +291,22 @@ public class ItemRest {
 		return array;
 	}
 
+	/**改功能需要调试
+	 * @param request
+	 * @param Keyword
+	 * @param Offset
+	 * @param Num
+	 * @param body
+	 * @return
+	 */
 	@RequestMapping(value = "/getSearchList", method = RequestMethod.GET)
 	public @ResponseBody
 	String getSearchList(HttpServletRequest request, @RequestParam("Keyword")
 	String Keyword, @RequestParam("Offset")
 	int Offset, @RequestParam("Num")
-	int Num) {
+	int Num,@RequestBody String body) {
+		com.alibaba.fastjson.JSONObject object=com.alibaba.fastjson.JSONObject.parseObject(body);
+		logger.info(body);
 		Map<String, Object> map = new HashMap<String, Object>();
 		User user = (User) request.getSession().getAttribute("user");
 		//				 map.put("userId", user.getId());
@@ -306,6 +315,11 @@ public class ItemRest {
 		return array.toString();
 	}
 
+	/**新版本不再使用，废弃
+	 * @param request
+	 * @param ItemId
+	 * @return
+	 */
 	@RequestMapping(value = "/getRoomId", method = RequestMethod.GET)
 	public @ResponseBody
 	String getRoomId(HttpServletRequest request, @RequestParam("ItemId")
@@ -339,16 +353,17 @@ public class ItemRest {
 
 	@RequestMapping(value = "/getItem", method = RequestMethod.GET)
 	public @ResponseBody
-	String getItem(HttpServletRequest request, @RequestParam("ItemId")
-	String ItemId) {
+	String getItem(HttpServletRequest request,@RequestBody String body) {
+		com.alibaba.fastjson.JSONObject object=com.alibaba.fastjson.JSONObject.parseObject(body);
+		logger.info(body);
 		JSONObject jsonObject = new JSONObject();
-		if (StringUtils.isNotEmpty(ItemId)) {
+		if (StringUtils.isNotEmpty(object.getString("ItemId"))) {
 			User user = (User) request.getSession().getAttribute("user");
 			// if(user!=null&&user.getIcon()!=null)
 			if (user != null) {
 
 				Map<String, Object> map = new HashMap<String, Object>();
-				map.put("itemId", ItemId);
+				map.put("itemId", object.getString("ItemId"));
 				List<LiveMedia> list = liveMediaService.getListByUserId(
 						Constance.GET__LIST_BYUSERID, map);
 				// logger.info("size -------------------" + list.size());
@@ -385,7 +400,7 @@ public class ItemRest {
 				jsonObject.put("longitude", "");
 			}
 			LiveMedia liveMedia = liveMediaService.get(Constance.GET_ONE,
-					Integer.valueOf(ItemId.trim()));
+					Integer.valueOf(object.getString("ItemId").trim()));
 			// logger.info(ItemId);
 			// logger.info(liveMedia + "----------------");
 			// logger.info(liveMedia.getLocation() + "-------------------");
@@ -407,15 +422,14 @@ public class ItemRest {
 
 	@RequestMapping(value = "/getComment", method = RequestMethod.GET)
 	public @ResponseBody
-	String getComment(HttpServletRequest request, @RequestParam("ItemId")
-	String ItemId, @RequestParam("Offset")
-	int Offset, @RequestParam("Num")
-	int Num) {
+	String getComment(HttpServletRequest request,@RequestBody String body) {
+		com.alibaba.fastjson.JSONObject object=com.alibaba.fastjson.JSONObject.parseObject(body);
+		logger.info(body);
 		Map<String, Object> map = new HashMap<String, Object>();
 		// map.put("userId", user.getId());
-		map.put("livemediaId", Integer.valueOf(ItemId.trim()));
-		map.put("Offset", Offset);
-		map.put("Num", Num);
+		map.put("livemediaId", Integer.valueOf(object.getString("ItemId")));
+		map.put("Offset", object.getString("Offset"));
+		map.put("Num", object.getString("Num"));
 		List<Comment> list = commentService.getList(Constance.GET_ALL, map);
 		JSONArray array = new JSONArray();
 		for (Comment comment : list) {
@@ -433,17 +447,17 @@ public class ItemRest {
 
 	@RequestMapping(value = "/care", method = RequestMethod.POST)
 	public @ResponseBody
-	int care(HttpServletRequest request, @RequestParam("UserId")
-	String UserId, @RequestParam("B")
-	boolean B) {
+	int care(HttpServletRequest request,@RequestBody String body) {
+		com.alibaba.fastjson.JSONObject object=com.alibaba.fastjson.JSONObject.parseObject(body);
+		logger.info(body);
 		Map<String, Object> maps = new HashMap<String, Object>();
-		maps.put("fansId", Integer.valueOf(UserId));
+		maps.put("fansId", Integer.valueOf(object.getString("UserId")));
 		User user = (User) request.getSession().getAttribute("user");
 		maps.put("userId", user.getId());
 		// logger.info("fans----------" + maps);
 		int count = userService.queryCount(Constance.GET_USER_FANS_COUNT, maps);
 		// logger.info("fans count----------" + count);
-		if (Integer.valueOf(UserId) != user.getId()) {
+		if (Integer.valueOf(object.getString("UserId")) != user.getId()) {
 			if (count == 0) {
 				userService.add(Constance.ADD_USER_FANS, maps);
 				return 0;
@@ -487,14 +501,14 @@ public class ItemRest {
 
 	@RequestMapping(value = "/getAroundItemList", method = RequestMethod.GET)
 	public @ResponseBody
-	String getAroundListItem(HttpServletRequest request, @RequestParam("Num")
-	String Num, @RequestParam("Offset")
-	String Offset) {
+	String getAroundListItem(HttpServletRequest request,@RequestBody String body) {
+		com.alibaba.fastjson.JSONObject object=com.alibaba.fastjson.JSONObject.parseObject(body);
+		logger.info(body);
 		Map<String, Object> maps = new HashMap<String, Object>();
 		User user = (User) request.getSession().getAttribute("user");
 		maps.put("userId", user.getId());
-		maps.put("Num", Num);
-		maps.put("Offset", Offset);
+		maps.put("Num", object.getString("Num"));
+		maps.put("Offset", object.getString("Offset"));
 		List<UserLocation> userLocationlist = locationService.getList(
 				Constance.GET_USER_LOCATIONS, maps);
 		List<LiveMedia> mediaList = new ArrayList<LiveMedia>();
@@ -526,11 +540,20 @@ public class ItemRest {
 		return "";
 	}
 
+	/**该功能需要重新调试
+	 * @param request
+	 * @param Offset
+	 * @param Num
+	 * @param body
+	 * @return
+	 */
 	@RequestMapping(value = "/getCaredItemList", method = RequestMethod.GET)
 	public @ResponseBody
 	String getCaredItemList(HttpServletRequest request, @RequestParam("Offset")
 	int Offset, @RequestParam("Num")
-	int Num) {
+	int Num,@RequestBody String body) {
+		com.alibaba.fastjson.JSONObject object=com.alibaba.fastjson.JSONObject.parseObject(body);
+		logger.info(body);
 		Map<String, Object> maps = new HashMap<String, Object>();
 		User user = (User) request.getSession().getAttribute("user");
 		maps.put("userId", user.getId());
@@ -550,12 +573,12 @@ public class ItemRest {
 
 	@RequestMapping(value = "/collect", method = RequestMethod.POST)
 	public @ResponseBody
-	int collect(HttpServletRequest request, @RequestParam("ItemId")
-	String ItemId, @RequestParam("B")
-	boolean B) {
+	int collect(HttpServletRequest request,@RequestBody String body) {
+		com.alibaba.fastjson.JSONObject object=com.alibaba.fastjson.JSONObject.parseObject(body);
+		logger.info(body);
 
 		LiveMedia liveMedia = liveMediaService.get(Constance.GET_ONE, Integer
-				.valueOf(ItemId));
+				.valueOf(object.getString("ItemId")));
 		if (liveMedia != null) {
 			Integer current = (liveMedia.getGet_collect_num() == null ? 0
 					: liveMedia.getGet_collect_num()) + 1;
@@ -578,19 +601,20 @@ public class ItemRest {
 
 	@RequestMapping(value = "/uploadImg", method = RequestMethod.POST)
 	public @ResponseBody
-	String uploadImg(HttpServletRequest request, @RequestParam(value="ImgData",required=false)
-	String ImgData, @RequestParam("RoomId")
-	String RoomId, @RequestParam("RecordingId")
-	String RecordingId) {
+	String uploadImg(HttpServletRequest request,@RequestBody String body) {
+	
+		
+		com.alibaba.fastjson.JSONObject object=com.alibaba.fastjson.JSONObject.parseObject(body);
+		logger.info("body-----"+body);
 		LiveMedia entity = new LiveMedia();
 		try {
 			User user = (User) request.getSession().getAttribute("user");
 			String icon = QRCodeDecoderHandlerUtil
-					.decoderQRCodeForBase64(ImgData);
+					.decoderQRCodeForBase64(object.getString("ImgData"));
 			entity.setFrame(icon);
-			entity.setRoomId(RoomId == "" ? entity.getRoomId() : RoomId);
-			entity.setRecordingId(RecordingId == "" ? entity.getRecordingId()
-					: RecordingId + ".mkv");
+			entity.setRoomId(object.getString("RoomId") == "" ? entity.getRoomId() : object.getString("RoomId"));
+			entity.setRecordingId(object.getString("RecordingId") == "" ? entity.getRecordingId()
+					: object.getString("RecordingId")  + ".mkv");
 			entity.setPlay_type(PLAYTYPE.LIVE.ordinal());
 			entity.setPublisherId(user.getId());
 			liveMediaService.add(Constance.ADD_OBJECT, entity);
@@ -609,13 +633,7 @@ public class ItemRest {
 
 	@RequestMapping(value = "/uploadVideo", method = RequestMethod.POST)
 	public @ResponseBody
-	String uploadVideo(HttpServletRequest request,@RequestParam(value="Name",required=false)
-			String Name,@RequestParam(value="Md5",required=false)
-			String Md5,@RequestParam(value="TotalSize",required=false)
-			String TotalSize,@RequestBody String body) throws IOException {
-		System.out.println("param1....."+Name);
-		System.out.println("param2....."+Md5);
-		System.out.println("param3....."+Md5);
+	String uploadVideo(HttpServletRequest request,@RequestBody String body) throws IOException {
 		com.alibaba.fastjson.JSONObject object=com.alibaba.fastjson.JSONObject.parseObject(body);
 		System.out.println("body>>>>>>>>>>>>."+object);
 		String md5=object.getString("Md5");
@@ -781,10 +799,11 @@ public class ItemRest {
 	}
 	@RequestMapping(value = "/getCollectNum", method = RequestMethod.GET)
 	public @ResponseBody
-	int getCollectNum(HttpServletRequest request, @RequestParam("ItemId")
-	String ItemId) {
+	int getCollectNum(HttpServletRequest request,@RequestBody String body) {
+		com.alibaba.fastjson.JSONObject object=com.alibaba.fastjson.JSONObject.parseObject(body);
+		logger.info(body);
 		LiveMedia liveMedia = liveMediaService.get(Constance.GET_ONE, Integer
-				.valueOf(ItemId));
+				.valueOf(object.getString("ItemId")));
 		if (liveMedia != null) {
 			return liveMedia.getGet_collect_num() == null ? 0 : liveMedia
 					.getGet_collect_num();
@@ -796,28 +815,27 @@ public class ItemRest {
 
 	@RequestMapping(value = "/praise", method = RequestMethod.POST)
 	public @ResponseBody
-	int parise(@RequestParam("ItemId")
-	String ItemId, @RequestParam("B")
-	boolean B) {
-		if (B) {
+	int parise(@RequestBody String body) {
+		com.alibaba.fastjson.JSONObject object=com.alibaba.fastjson.JSONObject.parseObject(body);
+		logger.info(body);
 			LiveMedia liveMedia = liveMediaService.get(Constance.GET_ONE,
-					Integer.valueOf(ItemId));
+					Integer.valueOf(object.getString("ItemId")));
 			if (liveMedia != null) {
 				Integer current = (liveMedia.getGet_praise_num() == null ? 0
 						: liveMedia.getGet_praise_num()) + 1;
 				liveMedia.setGet_praise_num(current);
 				liveMediaService.update(Constance.UPDATE_OBJECT, liveMedia);
 			}
-		}
 		return 0;
 	}
 
 	@RequestMapping(value = "/getPraiseNum", method = RequestMethod.GET)
 	public @ResponseBody
-	int getPraiseNum(@RequestParam("ItemId")
-	String ItemId) {
+	int getPraiseNum(@RequestBody String body) {
+		com.alibaba.fastjson.JSONObject object=com.alibaba.fastjson.JSONObject.parseObject(body);
+		logger.info(body);
 		LiveMedia liveMedia = liveMediaService.get(Constance.GET_ONE, Integer
-				.valueOf(ItemId));
+				.valueOf(object.getString("ItemId")));
 		if (liveMedia != null) {
 			return liveMedia.getGet_praise_num() == null ? 0 : liveMedia
 					.getGet_praise_num();
@@ -828,10 +846,11 @@ public class ItemRest {
 
 	@RequestMapping(value = "/getSawNum", method = RequestMethod.GET)
 	public @ResponseBody
-	int getSawNum(@RequestParam("ItemId")
-	String ItemId) {
+	int getSawNum(@RequestBody String body) {
+		com.alibaba.fastjson.JSONObject object=com.alibaba.fastjson.JSONObject.parseObject(body);
+		logger.info(body);
 		LiveMedia liveMedia = liveMediaService.get(Constance.GET_ONE, Integer
-				.valueOf(ItemId));
+				.valueOf(object.getString("ItemId")));
 		if (liveMedia != null) {
 			return liveMedia.getSeen_num() == null ? 0 : liveMedia
 					.getSeen_num();
@@ -842,37 +861,34 @@ public class ItemRest {
 
 	@RequestMapping(value = "/saw", method = RequestMethod.POST)
 	public @ResponseBody
-	int saw(HttpServletRequest request, @RequestParam("ItemId")
-	String ItemId, @RequestParam("B")
-	boolean B) {
-		if (B) {
+	int saw(HttpServletRequest request,@RequestBody String body) {
+		com.alibaba.fastjson.JSONObject object=com.alibaba.fastjson.JSONObject.parseObject(body);
+		logger.info(body);
 			LiveMedia liveMedia = liveMediaService.get(Constance.GET_ONE,
-					Integer.valueOf(ItemId));
+					Integer.valueOf(object.getString("ItemId")));
 			if (liveMedia != null) {
 				Integer current = (liveMedia.getSeen_num() == null ? 0
 						: liveMedia.getSeen_num()) + 1;
 				liveMedia.setSeen_num(current);
 				liveMediaService.update(Constance.UPDATE_OBJECT, liveMedia);
-			}
 		}
 		return 0;
 	}
 
 	@RequestMapping(value = "/comment", method = RequestMethod.POST)
 	public @ResponseBody
-	int comment(HttpServletRequest request, @RequestParam("ItemId")
-	String ItemId, @RequestParam("Content")
-	String Content, @RequestParam("B")
-	boolean B) {
+	int comment(HttpServletRequest request,@RequestBody String body) {
+		com.alibaba.fastjson.JSONObject object=com.alibaba.fastjson.JSONObject.parseObject(body);
+		logger.info(body);
 		Map<String, Object> maps = new HashMap<String, Object>();
-		maps.put("livemediaId", Integer.valueOf(ItemId));
+		maps.put("livemediaId", Integer.valueOf(object.getString("ItemId")));
 		User user = (User) request.getSession().getAttribute("user");
 		maps.put("userId", user.getId());
-		maps.put("content", Content);
+		maps.put("content", object.getString("Content"));
 
 		commentService.add(Constance.ADD_COMMENT, maps);
 
-		LiveMedia liveMedia = liveMediaService.get(Constance.GET_ONE, ItemId);
+		LiveMedia liveMedia = liveMediaService.get(Constance.GET_ONE, object.getString("ItemId"));
 		if (liveMedia != null && liveMedia.getId() != null) {
 			liveMedia.setComment_num(liveMedia.getComment_num() == null ? 1
 					: liveMedia.getComment_num() + 1);
@@ -885,16 +901,23 @@ public class ItemRest {
 
 	@RequestMapping(value = "/getCommentNum", method = RequestMethod.GET)
 	public @ResponseBody
-	int getCommentNum(@RequestParam("ItemId")
-	String ItemId) {
+	int getCommentNum(@RequestBody String body) {
+		com.alibaba.fastjson.JSONObject object=com.alibaba.fastjson.JSONObject.parseObject(body);
+		logger.info(body);
 
 		Map<String, Object> maps = new HashMap<String, Object>();
-		maps.put("livemediaId", Integer.valueOf(ItemId));
+		maps.put("livemediaId", Integer.valueOf(object.getString("ItemId")));
 		int count = commentService.queryCount(Constance.GET_COMMENT_USERID,
 				maps);
 		return count;
 	}
 
+	/**被report1 给替代
+	 * @param ItemId
+	 * @param B
+	 * @param ReportId
+	 * @return
+	 */
 	@RequestMapping(value = "/report", method = RequestMethod.POST)
 	public @ResponseBody
 	int report(@RequestParam("ItemId")
@@ -944,21 +967,19 @@ public class ItemRest {
 	
 	@RequestMapping(value = "/report1", method = RequestMethod.POST)
 	public @ResponseBody
-	int report1(@RequestParam("ItemId")
-	String ItemId, @RequestParam("B")
-	boolean B,@RequestParam(value="ReportId",required=false)
-	String ReportId) {
-		if (B) {
+	int report1(@RequestBody String body) {
+		com.alibaba.fastjson.JSONObject object=com.alibaba.fastjson.JSONObject.parseObject(body);
+		logger.info(body);
 			LiveMedia liveMedia = liveMediaService.get(Constance.GET_ONE,
-					Integer.valueOf(ItemId));
+					Integer.valueOf(object.getString("ItemId")));
 			if (liveMedia != null) {
 				if(liveMedia.getReport_num()==null||liveMedia.getReport_num()==0)
 				{	Map<String,Object> map=new HashMap<String, Object>();
-					map.put("livemediaId",ItemId);
+					map.put("livemediaId",object.getString("ItemId"));
 					approveInfoService.add(Constance.ADD_OBJECT, map);
 					//deploye the BPMN xml
 					map.remove("id");
-					User report=userService.get(Constance.GET_ONE, ReportId);
+					User report=userService.get(Constance.GET_ONE, object.getString("ReportId"));
 					if(report!=null)
 					{
 						
@@ -975,9 +996,7 @@ public class ItemRest {
 						//业务 记者看到视频进行举报，举报提交给自己的所属机构的上司，上司再给自己的领导
 						//启动流程
 						String processId=runtimeService.startProcessInstanceByKey("myProcess",businessKey,map).getId();
-						
-						
-						
+						liveMedia.setProcessInstanceId(processId);
 //						String processId=runtimeService.startProcessInstanceByKey("myProcess",).getId();
 						System.out.println("进程Id...."+processId);
 						
@@ -985,8 +1004,11 @@ public class ItemRest {
 //						List<Task> myTaskList=taskService.createTaskQuery().taskDefinitionKey("usertask1").processInstanceBusinessKey(businessKey).list();
 						//找到当前任务，完成当前任务，然后委托给具体用户
 						Task task=taskService.createTaskQuery().taskDefinitionKey("usertask1").processInstanceBusinessKey(businessKey).singleResult();
+						//分配给自己,然后完成它
+						taskService.claim(task.getId(), "user_"+report.getId().toString());
 //						taskService.complete(task.getId());
 						taskService.complete(task.getId());
+						//分配给领导
 						task=taskService.createTaskQuery().taskDefinitionKey("usertask2").processInstanceBusinessKey(businessKey).singleResult();
 						taskService.claim(task.getId(), "user_"+report.getLeaderId().toString());
 					}
@@ -998,6 +1020,7 @@ public class ItemRest {
 				liveMedia.setReport_num(current);
 				//approve status
 				liveMedia.setApprove_status(String.valueOf(APPROVE.APPROVE_1_APPROVED));
+				
 				liveMediaService.update(Constance.UPDATE_OBJECT, liveMedia);
 //				if(StringUtils.isNotEmpty(ReportId))
 //				{
@@ -1011,7 +1034,6 @@ public class ItemRest {
 //					}
 //				}
 
-			}
 		}
 		return 0;
 	}
@@ -1019,10 +1041,11 @@ public class ItemRest {
 
 	@RequestMapping(value = "/getReportNum", method = RequestMethod.GET)
 	public @ResponseBody
-	int getReportNum(@RequestParam("ItemId")
-	String ItemId) {
+	int getReportNum(@RequestBody String body) {
+		com.alibaba.fastjson.JSONObject object=com.alibaba.fastjson.JSONObject.parseObject(body);
+		logger.info(body);
 		LiveMedia liveMedia = liveMediaService.get(Constance.GET_ONE, Integer
-				.valueOf(ItemId));
+				.valueOf(object.getString("ItemId")));
 		if (liveMedia != null) {
 			// logger.info(liveMedia.getReport_num());
 			return liveMedia.getReport_num();
@@ -1031,6 +1054,10 @@ public class ItemRest {
 		}
 	}
 
+	/**改功能需要讨论
+	 * @param RoomId
+	 * @return
+	 */
 	@RequestMapping(value = "/deleteItem", method = RequestMethod.POST)
 	public @ResponseBody
 	int deleteItem(@RequestParam("RoomId")
@@ -1052,6 +1079,11 @@ public class ItemRest {
 		return 0;
 	}
 
+	/**新需求
+	 * @param request
+	 * @param RoomId
+	 * @return
+	 */
 	@RequestMapping(value = "/online", method = RequestMethod.GET)
 	public @ResponseBody
 	String online(HttpServletRequest request, @RequestParam("RoomId")
@@ -1096,38 +1128,27 @@ public class ItemRest {
 
 	@RequestMapping(value = "/publish", method = RequestMethod.POST)
 	public @ResponseBody
-	int publish(HttpServletRequest request, @RequestParam("UserId")
-	String UserId, @RequestParam("Token")
-	String Token, @RequestParam("Title")
-	String Title, @RequestParam("Describe")
-	String Describe, @RequestParam("Classes")
-	String Classes, @RequestParam("Tag")
-	String Tag, @RequestParam("Location")
-	String Location, @RequestParam("Longitude")
-	String Longitude, @RequestParam("Latitude")
-	String Latitude,
-
-	@RequestParam("Role")
-	String Role, @RequestParam("ItemId")
-	String ItemId) {
+	int publish(HttpServletRequest request,@RequestBody String body) {
+		com.alibaba.fastjson.JSONObject object=com.alibaba.fastjson.JSONObject.parseObject(body);
+		logger.info("body-----"+body);
 		try {
 			User user = (User) request.getSession().getAttribute("user");
 			LiveMedia liveMedia = liveMediaService.get(Constance.GET_ONE,
-					ItemId);
+					Integer.valueOf(object.getString("ItemId")));
 			if (liveMedia != null && liveMedia.getId() != null) {
 				LiveMedia entity = new LiveMedia();
-				entity.setTitle(Title == "" ? entity.getTitle() : Title);
-				entity.setDescription(Describe == "" ? entity.getDescription()
-						: Describe);
-				entity.setType(Classes == "" ? entity.getType() : Classes);
-				entity.setTag(Tag == "" ? entity.getTag() : Tag);
-				entity.setLatitude(Latitude == "" ? entity.getLatitude()
-						: Latitude);
-				entity.setLongitude(Longitude == "" ? entity.getLongitude()
-						: Longitude);
-				entity.setLocation(Location == "" ? entity.getLocation()
-						: Location);
-				entity.setId(Integer.valueOf(ItemId));
+				entity.setTitle(object.getString("Title") == "" ? entity.getTitle() : object.getString("Title") );
+				entity.setDescription(object.getString("Describe")  == "" ? entity.getDescription()
+						: object.getString("Describe"));
+				entity.setType(object.getString("Classes") == "" ? entity.getType() : object.getString("Classes"));
+				entity.setTag(object.getString("Tag") == "" ? entity.getTag() : object.getString("Tag"));
+				entity.setLatitude(object.getString("Latitude") == "" ? entity.getLatitude()
+						: object.getString("Latitude"));
+				entity.setLongitude(object.getString("Longitude") == "" ? entity.getLongitude()
+						: object.getString("Longitude"));
+				entity.setLocation(object.getString("Location")  == "" ? entity.getLocation()
+						: object.getString("Location") );
+				entity.setId(Integer.valueOf(object.getString("ItemId") ));
 				entity.setPlay_type(PLAYTYPE.LIVE.ordinal());
 				liveMediaService.update(Constance.UPDATE_OBJECT, entity);
 				// String url = "http://" + Param.licode_server +
